@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanjay Chib · Portfolio</title>
+<meta name="description" content="Portfolio of interactive learning examples designed with AI by Sanjay Chib.">
+<style>
+:root{
+  --ink:#182033;
+  --muted:#617084;
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --line:#dce3ec;
+  --accent:#275df5;
+  --accent-soft:#edf2ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.55;
+}
+a{color:var(--accent)}
+a:focus-visible{outline:3px solid #111;outline-offset:3px}
+.wrap{width:min(980px,calc(100% - 32px));margin:0 auto;padding:56px 0 48px}
+.hero{background:linear-gradient(135deg,#fff 0%,#eef3ff 100%);border:1px solid var(--line);border-radius:22px;padding:36px;box-shadow:0 12px 28px rgba(24,32,51,.07)}
+.badge{display:inline-block;padding:7px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.03em;margin:16px 0 12px}
+.lead{font-size:1.12rem;color:var(--muted);max-width:720px;margin:0}
+.principle{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.86rem;font-weight:700;color:var(--muted)}
+.principle span.step{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 11px;color:var(--ink)}
+.principle span.sep{color:#a8b3c2}
+h2{font-size:1.05rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:40px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;transition:border-color .15s ease,box-shadow .15s ease}
+.card:hover{border-color:#b9c9f5;box-shadow:0 10px 24px rgba(24,32,51,.08)}
+.num{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.05em;text-transform:uppercase}
+.card h3{font-size:1.18rem;line-height:1.25;margin:8px 0 6px}
+.q{font-weight:700;margin:0 0 10px}
+.card p{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+.meta{font-size:.82rem;color:var(--muted);padding-top:2px;margin-bottom:18px!important}
+.btn{display:inline-block;margin-top:auto;align-self:flex-start;background:var(--accent);color:#fff;text-decoration:none;font-weight:800;border-radius:12px;padding:11px 16px}
+.btn:hover{filter:brightness(1.07)}
+.note{margin-top:28px;padding:18px;border-radius:15px;background:linear-gradient(135deg,var(--accent-soft),#fff);border:1px solid #cad7ff}
+footer{margin-top:32px;font-size:.9rem;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+@media(max-width:820px){
+  .grid{grid-template-columns:1fr}
+  .hero{padding:26px}
+  .wrap{padding-top:28px}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="hero">
+    <span class="badge">Portfolio</span>
+    <h1>Sanjay Chib</h1>
+    <p class="lead">A small collection of interactive learning examples, showing how AI can support the design and development of practical, work-based learning and content. Each example starts from an everyday work task, asks the learner to make a decision, and gives feedback along the way.</p>
+    <div class="principle" aria-label="Design approach">
+      <span class="step">Work changes</span><span class="sep">›</span>
+      <span class="step">Capability gap</span><span class="sep">›</span>
+      <span class="step">Behaviour defined</span><span class="sep">›</span>
+      <span class="step">Practice</span><span class="sep">›</span>
+      <span class="step">Feedback</span>
+    </div>
+  </section>
+
+  <h2>Examples</h2>
+  <div class="grid">
+
+    <article class="card">
+      <span class="num">Example 1</span>
+      <h3>AI Capability Simulation</h3>
+      <p class="q">Can you trust the AI recommendation?</p>
+      <p>An AI assistant has prepared a customer case for review. The learner inspects the source evidence, checks what the AI got right or missed, and decides whether the case can move forward.</p>
+      <p class="meta">Skills practised: verify, question, decide, intervene</p>
+      <a class="btn" href="https://sanjaychib.github.io/ai-capability-demo/">Open example</a>
+    </article>
+
+    <article class="card">
+      <span class="num">Example 2</span>
+      <h3>Active Practice Simulation</h3>
+      <p class="q">Would you use this AI briefing?</p>
+      <p>The learner is a manager preparing a short update for a senior meeting. They check the evidence behind an AI-drafted briefing, judge its quality, and decide what to do next.</p>
+      <p class="meta">From training to practice</p>
+      <a class="btn" href="https://sanjaychib.github.io/ai-active-practice-demo/">Open example</a>
+    </article>
+
+    <article class="card">
+      <span class="num">Example 3</span>
+      <h3>Information Quality Check</h3>
+      <p class="q">Is this information reliable enough to use?</p>
+      <p>Before AI writes a case summary, the learner reviews four sources, from a policy record to employee notes, and decides for each one: use it, check it first, or do not use it.</p>
+      <p class="meta">Judging inputs before AI uses them</p>
+      <a class="btn" href="https://sanjaychib.github.io/ai-information-quality-demo/">Open example</a>
+    </article>
+
+  </div>
+
+  <div class="note"><strong>About these examples.</strong> Each is a single, self-contained web page that runs in any browser, on desktop or mobile, without an authoring tool or platform. Scenarios are illustrative and do not represent any organisation's internal processes.</div>
+
+  <footer>
+    <span>Sanjay Chib</span>
+    <a href="https://www.linkedin.com/in/sanjay-c-790b061/">LinkedIn</a>
+  </footer>
+
+</main>
+</body>
+</html>
