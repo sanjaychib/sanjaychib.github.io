@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carbon Footprint Lab</title>
+<style>
+:root{
+  --ink:#1f2433;--ink2:#454b60;--muted:#6b7186;--line:#e1e5ea;--bg:#f4f7f6;--paper:#fff;
+  --pri:#1f8a70;--priDk:#176b57;
+  --lav:#ece9ff;--mint:#dcf3ea;--peach:#ffe7dc;--sky:#e1efff;--butter:#fff3cc;
+  --pos:#1f8a5b;--neg:#c2483a;--r-lg:20px;--r-md:14px;--r-sm:10px
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:17px;line-height:1.5}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+#app{height:100dvh;display:grid;grid-template-rows:auto 5px 1fr auto}
+header{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,40px)}
+.brand-t{font-weight:700;font-size:1.05rem}
+.brand-s{font-size:.8rem;color:var(--muted)}
+.hbtns{display:flex;gap:8px;align-items:center}
+.hbtn{background:var(--mint);border:0;color:var(--priDk);border-radius:var(--r-sm);padding:8px 12px;font-size:.88rem;font-weight:650;text-decoration:none}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+#bar{background:var(--line)}#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8fd3b6,#a9cdf5,#ffd98a);transition:width .3s}
+main{overflow:auto}
+.stage{max-width:1160px;margin:0 auto;padding:clamp(16px,3vh,28px) clamp(16px,3vw,40px) 30px}
+.path{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.path span{font-size:.78rem;font-weight:650;padding:4px 10px;border-radius:99px;background:#e8ecea;color:var(--muted)}
+.path span.on{background:var(--pri);color:#fff}
+.path span.done{background:var(--mint);color:var(--priDk)}
+h1{font-size:clamp(2.2rem,4.8vw,3.7rem);line-height:1.04;margin:0 0 12px;letter-spacing:-.02em;max-width:15ch}
+h2{font-size:clamp(1.6rem,3.1vw,2.4rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.015em;max-width:28ch}
+h3{font-size:1.08rem;margin:0 0 6px;line-height:1.25}
+p{margin:0 0 10px}
+.lead{font-size:clamp(1.03rem,1.6vw,1.2rem);color:var(--ink2);max-width:64ch;margin-bottom:18px}
+.muted{color:var(--muted)}.small{font-size:.86rem}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;min-width:0}
+.lav{background:var(--lav);border-color:transparent}.mint{background:var(--mint);border-color:transparent}.peach{background:var(--peach);border-color:transparent}.sky{background:var(--sky);border-color:transparent}.butter{background:var(--butter);border-color:transparent}
+.big{font-size:clamp(2.4rem,5vw,3.6rem);font-weight:750;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.take{margin-top:16px;padding:14px 16px;border-radius:var(--r-md);background:#fff;border-left:5px solid var(--pri);box-shadow:0 1px 0 var(--line)}
+.take b{color:var(--pri)}
+.fb{border-radius:var(--r-md);padding:12px 14px;margin-top:10px;background:var(--sky);font-size:.93rem}
+.fb.good{background:var(--mint)}.fb.warn{background:var(--butter)}
+.btn{border:0;border-radius:var(--r-sm);padding:11px 16px;font-weight:650;background:var(--pri);color:#fff;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--priDk)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:9px 12px;font-weight:600;font-size:.9rem;text-align:left}
+.opt.sel{border-color:var(--pri);background:var(--mint)}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.flow span{padding:8px 12px;border-radius:var(--r-sm);font-weight:650;font-size:.9rem}
+.flow em{font-style:normal;color:var(--muted)}
+.tx{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.tx:last-child{border-bottom:0}
+.tx .kg{min-width:110px;text-align:right;font-weight:700;color:var(--pri);opacity:0;transition:opacity .4s}
+.tx.on .kg{opacity:1}
+.slider label{display:flex;justify-content:space-between;font-size:.9rem;font-weight:650;color:var(--ink2);margin-top:10px}
+input[type=range]{width:100%;accent-color:var(--pri)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tabs button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:7px 13px;font-weight:650;font-size:.88rem}
+.tabs button[aria-selected=true]{background:var(--pri);border-color:var(--pri);color:#fff}
+.barRow{display:grid;grid-template-columns:110px 1fr 60px;gap:10px;align-items:center;font-size:.9rem;margin-top:8px}
+.barRow b{text-align:right;font-variant-numeric:tabular-nums}
+.track{height:14px;background:#e8ecea;border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;transition:width .3s}
+.qual{height:10px;background:#e8ecea;border-radius:99px;overflow:hidden;margin-top:6px}
+.qual i{display:block;height:100%;background:linear-gradient(90deg,#ffd98a,#8fd3b6);transition:width .3s}
+.q{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;line-height:1.25}
+.refs{margin:0;padding-left:20px;display:grid;gap:8px;font-size:.9rem}
+.refs a{color:var(--pri);font-weight:600}
+footer{background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(16px,3vw,40px)}
+.flabel{font-size:.9rem;color:var(--muted);font-weight:600}
+.fnav{display:flex;gap:8px}
+.fnav button{border:1px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:10px 18px;font-weight:650}
+.fnav .nx{background:var(--pri);color:#fff;border-color:var(--pri)}
+.fnav button:disabled{opacity:.35;cursor:not-allowed}
+@media(max-width:900px){.g2,.g3,.grid2{grid-template-columns:1fr}.brand-s,.flabel{display:none}.barRow{grid-template-columns:90px 1fr 54px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div><div class="brand-t">Carbon Footprint Lab</div><div class="brand-s">Supporting activity · Designed and developed by Dr Sanjay Chib</div></div>
+  <div class="hbtns"><a class="hbtn" href="climate-action.html">Back to the core lesson</a><span class="count" id="count"></span></div>
+</header>
+<div id="bar"><i></i></div>
+<main id="view"><div class="stage" id="stage"></div></main>
+<footer><span class="flabel" id="flabel"></span><div class="fnav"><button id="back">Back</button><button class="nx" id="next">Next</button></div></footer>
+</div>
+
+<script>
+'use strict';
+/* Spend factors: kg CO2e per USD, from USEEIO 2024 purchaser-price factors (see sources). Default spends are illustrative. */
+const F={
+ groceries:{n:'Groceries',f:.157260,s:320,g:'Essentials'},dining:{n:'Dining out',f:.135519,s:160,g:'Essentials'},utilities:{n:'Utilities',f:.489247,s:140,g:'Essentials'},housing:{n:'Housing services',f:.204105,s:850,g:'Essentials'},
+ clothing:{n:'Clothing',f:.129766,s:100,g:'Stuff'},electronics:{n:'Electronics',f:.103955,s:80,g:'Stuff'},personal:{n:'Personal care',f:.125871,s:70,g:'Stuff'},other:{n:'Other shopping',f:.144705,s:180,g:'Stuff'},
+ recreation:{n:'Recreation',f:.178766,s:130,g:'Experiences'},hotel:{n:'Accommodation',f:.129632,s:60,g:'Experiences'},ground:{n:'Ground transport',f:.492467,s:90,g:'Experiences'},air:{n:'Air travel',f:.684484,s:110,g:'Experiences'}
+};
+const DEF=Object.fromEntries(Object.entries(F).map(([k,v])=>[k,v.s]));
+const S={pick:'air',bank:false,tab:'Essentials',ref:{drive:false,flight:false,home:false},km:9000,car:.235,short:2,long:1,home:3.5,people:3,price:80,cut:0,q:0};
+const $=id=>document.getElementById(id);
+const usd=n=>'$'+Math.round(n).toLocaleString('en-US');
+const chapters=['Spend','Model','Wallet','Refine','Hotspots','Discuss'];
+function path(c){return '<div class="path" aria-hidden="true">'+chapters.map((n,i)=>`<span class="${i===c?'on':i<c?'done':''}">${n}</span>`).join('')+'</div>';}
+function setS(k,v){S[k]=v;render();}
+
+function totals(){
+ const it={};Object.entries(F).forEach(([k,d])=>it[k]=d.s*12*d.f/1000);
+ if(S.ref.drive)it.ground=S.km*S.car/1000;
+ if(S.ref.flight)it.air=S.short*.35+S.long*1.2;
+ if(S.ref.home)it.utilities=S.home/S.people;
+ const g={Essentials:0,Stuff:0,Experiences:0};Object.entries(it).forEach(([k,v])=>g[F[k].g]+=v);
+ return{it,g,t:Object.values(it).reduce((a,b)=>a+b,0)};
+}
+
+const slides=[
+{label:'$100, different footprints',c:0,html:()=>{const d=F[S.pick],kg=100*d.f;return `${path(0)}<div class="g2" style="align-items:center"><div>
+ <h1>Money moves. Carbon follows.</h1><p class="lead">Every purchase sets off a supply chain: materials, energy, transport, buildings. Choose where $100 goes and see the emissions behind it.</p>
+ <div class="grid2">${['air','utilities','ground','recreation','groceries','clothing'].map(k=>`<button class="opt ${S.pick===k?'sel':''}" onclick="setS('pick','${k}')">${F[k].n}</button>`).join('')}</div></div>
+ <div class="card mint" style="text-align:center"><div class="small">$100 spent on ${d.n.toLowerCase()}</div><div class="big" style="margin:10px 0">${kg.toFixed(0)} kg</div><div class="small">CO₂e across the supply chain</div>
+ <div class="track" style="margin-top:14px;background:#fff"><i style="width:${Math.min(100,kg/70*100)}%;background:${kg>40?'#ffb08a':kg>18?'#ffd98a':'#8fd3b6'}"></i></div>
+ <p class="small" style="margin:12px 0 0">Air travel is about ${(F.air.f/F.clothing.f).toFixed(0)} times clothing, per dollar.</p></div></div>`;}},
+
+{label:'How spending reveals emissions',c:1,html:()=>{const tx=[['Airline','Travel',260,'air'],['Supermarket','Groceries',120,'groceries'],['Clothing store','Clothing',140,'clothing'],['Restaurant','Dining out',75,'dining'],['Electronics shop','Electronics',210,'electronics']];
+ return `${path(1)}<h2>Your bank statement is a map of demand.</h2><p class="lead">A spend-based model links each purchase to the average emissions of its sector. It is a screening estimate: quick, broad, and improvable.</p>
+ <div class="flow"><span class="sky">Money</span><em>→</em><span class="lav">Sector</span><em>→</em><span class="butter">Supply chain</span><em>→</em><span class="mint">kg CO₂e</span></div>
+ <div class="g2" style="align-items:start"><div class="card"><h3>Recent spending · example</h3>${tx.map(x=>`<div class="tx ${S.bank?'on':''}"><span><b>${x[0]}</b><br><span class="small muted">${x[1]}</span></span><span>${usd(x[2])}</span><span class="kg">≈ ${(x[2]*F[x[3]].f).toFixed(0)} kg CO₂e</span></div>`).join('')}
+ <div class="row"><button class="btn" onclick="setS('bank',true)">${S.bank?'Revealed':'Reveal the carbon'}</button></div></div>
+ <div class="card butter"><h3>Read it carefully</h3><p class="small" style="margin:0">Everyone in this lab uses one common factor set, so results are comparable. Real inventories improve by using supplier, country and activity data, such as kilometres driven or flights taken. You will do that in step 4.</p></div></div>`;}},
+
+{label:'Build your spend footprint',c:2,html:()=>{const keys=Object.keys(F).filter(k=>F[k].g===S.tab);return `${path(2)}<h2>Where does your monthly money go?</h2><p class="lead">Enter rough monthly spending in US-dollar terms. The annual estimate updates as you move each slider.</p>
+ <div class="g2" style="align-items:start"><div class="card"><div class="tabs" role="tablist">${['Essentials','Stuff','Experiences'].map(t=>`<button role="tab" aria-selected="${S.tab===t}" onclick="setS('tab','${t}')">${t}</button>`).join('')}</div>
+ ${keys.map(k=>`<div class="slider"><label for="w_${k}"><span>${F[k].n}</span><span id="wv_${k}"></span></label><input id="w_${k}" type="range" min="0" max="${k==='housing'?2500:1500}" step="10" value="${F[k].s}"></div>`).join('')}
+ <div class="row"><button class="btn ghost" onclick="Object.keys(F).forEach(k=>F[k].s=DEF[k]);render()">Reset to example values</button></div></div>
+ <div class="card lav"><div class="small">Screening estimate</div><div class="big" style="margin:8px 0"><span id="wt"></span> t</div><div class="small">CO₂e per year, from spending only</div><div id="wg" style="margin-top:12px"></div></div></div>`;},
+ after:()=>{const keys=Object.keys(F).filter(k=>F[k].g===S.tab);const upd=()=>{const r=totals();keys.forEach(k=>$('wv_'+k).textContent=usd(F[k].s));$('wt').textContent=r.t.toFixed(1);$('wg').innerHTML=Object.entries(r.g).map(([n,v])=>`<div class="barRow"><span>${n}</span><div class="track" style="background:#fff"><i style="width:${r.t?v/r.t*100:0}%;background:var(--pri)"></i></div><b>${v.toFixed(1)}</b></div>`).join('');};
+  keys.forEach(k=>$('w_'+k).addEventListener('input',e=>{F[k].s=+e.target.value;upd();}));upd();}},
+
+{label:'Replace rough spend with better data',c:3,html:()=>`${path(3)}<h2>Know something better than spend? Use it.</h2><p class="lead">Real carbon accounting swaps rough estimates for specific activity data where it exists. The better data replaces the spend estimate; it is not added on top.</p>
+ <div class="g3">
+ <div class="card"><h3>Driving</h3><div class="row">${[['spend',false],['km',true]].map(([t,v])=>`<button class="opt ${S.ref.drive===v?'sel':''}" onclick="S.ref.drive=${v};render()">Use ${t}</button>`).join('')}</div>
+  <div class="slider"><label for="km"><span>km per year</span><span id="kmv"></span></label><input id="km" type="range" min="0" max="30000" step="500" value="${S.km}"></div>
+  <div class="row">${[['Petrol',.235],['Hybrid',.188],['Electric',.063]].map(([t,f])=>`<button class="opt ${S.car===f?'sel':''}" onclick="setS('car',${f})">${t}</button>`).join('')}</div></div>
+ <div class="card"><h3>Flights</h3><div class="row">${[['spend',false],['trips',true]].map(([t,v])=>`<button class="opt ${S.ref.flight===v?'sel':''}" onclick="S.ref.flight=${v};render()">Use ${t}</button>`).join('')}</div>
+  <div class="slider"><label for="sh"><span>Short-haul returns</span><span id="shv"></span></label><input id="sh" type="range" min="0" max="8" value="${S.short}"></div>
+  <div class="slider"><label for="lo"><span>Long-haul returns</span><span id="lov"></span></label><input id="lo" type="range" min="0" max="5" value="${S.long}"></div></div>
+ <div class="card"><h3>Home energy</h3><div class="row">${[['spend',false],['profile',true]].map(([t,v])=>`<button class="opt ${S.ref.home===v?'sel':''}" onclick="S.ref.home=${v};render()">Use ${t}</button>`).join('')}</div>
+  <div class="row">${[['Efficient',1.2],['Mixed',3.5],['Older fossil',7.2]].map(([t,f])=>`<button class="opt ${S.home===f?'sel':''}" onclick="setS('home',${f})">${t}</button>`).join('')}</div>
+  <div class="slider"><label for="pp"><span>People in home</span><span id="ppv"></span></label><input id="pp" type="range" min="1" max="6" value="${S.people}"></div></div>
+ </div>
+ <div class="g2" style="margin-top:14px;align-items:center"><div class="card"><div class="small"><b>Data quality</b> · <span id="qt"></span></div><div class="qual"><i id="qb"></i></div></div><div class="card mint"><div class="small">Updated estimate</div><div style="font-size:2rem;font-weight:750"><span id="rt"></span> t CO₂e / year</div></div></div>`,
+ after:()=>{const upd=()=>{$('kmv').textContent=S.km.toLocaleString('en-US');$('shv').textContent=S.short;$('lov').textContent=S.long;$('ppv').textContent=S.people;const n=Object.values(S.ref).filter(Boolean).length;$('qb').style.width=(35+n*20)+'%';$('qt').textContent=['mostly spend-based','one category uses activity data','two categories use activity data','three high-impact categories use activity data'][n];$('rt').textContent=totals().t.toFixed(1);};
+  $('km').addEventListener('input',e=>{S.km=+e.target.value;upd();});$('sh').addEventListener('input',e=>{S.short=+e.target.value;upd();});$('lo').addEventListener('input',e=>{S.long=+e.target.value;upd();});$('pp').addEventListener('input',e=>{S.people=+e.target.value;upd();});upd();}},
+
+{label:'Your hotspots',c:4,html:()=>`${path(4)}<h2>Find your hotspots. Reduce. Then balance the rest.</h2>
+ <div class="g2" style="align-items:start"><div class="card"><div class="small">Your estimate</div><div class="big" style="margin:6px 0"><span id="ht"></span> t</div><div class="small muted">CO₂e per year</div><div id="hs" style="margin-top:12px"></div><p class="small muted" style="margin-top:10px">Largest single item: <b id="hi"></b></p></div>
+ <div style="display:grid;gap:12px">
+ <div class="card mint"><div class="small" style="font-weight:700;color:var(--priDk)">Step 1 · Reduce first</div><h3 style="margin-top:4px">Cut your largest group</h3><div class="row" style="margin-top:4px">${[0,.1,.25,.4].map(r=>`<button class="opt ${S.cut===r?'sel':''}" onclick="setS('cut',${r})">${r?'−'+r*100+'%':'No change'}</button>`).join('')}</div><p class="small" id="cutMsg" style="margin:8px 0 0"></p></div>
+ <div class="card sky"><div class="small" style="font-weight:700;color:#2e5f9e">Step 2 · Balance what is left</div><h3 style="margin-top:4px">What would it cost to remove the rest?</h3><p class="small" style="margin:0 0 4px;color:var(--ink2)">Some emissions are hard to avoid. One option is to pay for projects that remove or avoid an equal amount elsewhere. Prices per tonne vary widely with the type and quality of project.</p>
+ <div class="slider"><label for="pr"><span>Price per tonne</span><span id="prv"></span></label><input id="pr" type="range" min="10" max="250" step="10" value="${S.price}"></div>
+ <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:8px"><span style="font-size:2rem;font-weight:750;font-variant-numeric:tabular-nums" id="cost"></span><span class="small" id="costM"></span></div>
+ <p class="small" style="margin:6px 0 0;color:var(--ink2)">Balancing only counts if the tonnes are real, verified and not counted twice. It comes after reducing, not instead of it.</p></div>
+ </div></div>`,
+ after:()=>{const upd=()=>{const r=totals(),srt=Object.entries(r.g).sort((a,b)=>b[1]-a[1]),top=srt[0],saved=top[1]*S.cut,adj=r.t-saved,big=Object.entries(r.it).sort((a,b)=>b[1]-a[1])[0];
+  $('ht').textContent=r.t.toFixed(1);$('hs').innerHTML=srt.map(([n,v],i)=>`<div class="barRow"><span>${n}</span><div class="track"><i style="width:${v/r.t*100}%;background:${i===0?'#ffb08a':'#8fd3b6'}"></i></div><b>${v.toFixed(1)} t</b></div>`).join('');$('hi').textContent=F[big[0]].n+' ('+big[1].toFixed(1)+' t)';
+  $('prv').textContent='$'+S.price+' per tonne';$('cost').textContent=usd(adj*S.price)+' a year';$('costM').textContent='to balance '+adj.toFixed(1)+' t · about '+usd(adj*S.price/12)+' a month';
+  $('cutMsg').textContent=S.cut?`Cutting ${top[0].toLowerCase()} by ${S.cut*100}% saves ${saved.toFixed(1)} t. You now have ${adj.toFixed(1)} t left to balance.`:`Your largest group is ${top[0].toLowerCase()}. Try a cut and watch the cost of balancing fall.`;};
+  $('pr').addEventListener('input',e=>{S.price=+e.target.value;upd();});upd();}},
+
+{label:'Discuss',c:5,html:()=>{const qs=['Did the estimate change what you thought was driving your footprint?','Which category could you reduce without lowering your quality of life much?','Why might $500 on two different things create very different emissions?','Would you trust a spend-based estimate for a business decision? What data would you want?','At what carbon price would the number change your behaviour?'];
+ return `${path(5)}<h2>Turn the estimate into a judgement.</h2>
+ <div class="g2" style="align-items:stretch"><div class="card lav" style="display:flex;flex-direction:column;justify-content:space-between;min-height:260px"><div><div class="small">Question ${S.q+1} of ${qs.length}</div><p class="q" style="margin-top:8px">${qs[S.q]}</p></div><div class="row"><button class="btn" onclick="setS('q',(S.q+1)%${qs.length})">Next question</button></div></div>
+ <div><div class="card mint"><b>Compare patterns, not people.</b><p class="small" style="margin:4px 0 0">Which categories show up as hotspots across the room?</p></div>
+ <div class="card sky" style="margin-top:12px"><b>Once tonnes are visible, they can carry a price.</b><p class="small" style="margin:4px 0 8px">Measuring, reducing, then paying to balance the rest: that is how a footprint becomes a decision. It links back to the core lesson's question: what helps a climate solution scale?</p><a class="btn" href="climate-action.html">Back to the core lesson</a></div></div></div>
+ <div class="take"><b>Method note:</b> this is a classroom screening model with one common factor set, not an audited inventory. See the sources on the next screen.</div>`;}},
+
+{label:'Method and sources',c:5,html:()=>`${path(5)}<h2>Method and sources</h2><div class="card"><ol class="refs">
+ <li>GHG Protocol. <i>Scope 3 Calculation Guidance.</i> Recognises supplier-specific, hybrid, average-data and spend-based methods. <a href="https://ghgprotocol.org/sites/default/files/ghgp/standards/Scope3_Calculation_Guidance_0.pdf" target="_blank" rel="noopener">PDF</a></li>
+ <li>US EPA. <i>USEEIO models.</i> Environmentally extended input-output modelling links economic demand with supply-chain impacts. <a href="https://www.epa.gov/land-research/us-environmentally-extended-input-output-useeio-models" target="_blank" rel="noopener">epa.gov</a></li>
+ <li>USEEIO 2024 spend factors used in this lab (for example air transport 0.684, utilities 0.489, groceries 0.157, clothing 0.130 kg CO₂e per USD). <a href="https://greencalculus.com/factors/united-states-emission-factors/" target="_blank" rel="noopener">Factor reference</a></li>
+ <li>Cornerstone. <i>EEIO 2026.</i> Multi-regional spend-based factors for 405 sectors across 148 countries. <a href="https://docs.cornerstonedata.org/eeio/" target="_blank" rel="noopener">docs</a></li>
+ <li>ICCT. (2025). <i>Life-cycle emissions of passenger cars in Europe.</i> Petrol 235, hybrid 188, battery electric 63 g CO₂e per km. <a href="https://theicct.org/publication/electric-cars-life-cycle-analysis-emissions-europe-jul25/" target="_blank" rel="noopener">theicct.org</a></li>
+ </ol><p class="small muted" style="margin-top:12px">Example spending, flight and home-energy profiles are simplified classroom values. Real inventories should use the best available supplier, country, currency, year and activity data.</p></div>`}
+];
+
+let idx=0;
+function render(){const s=slides[idx];$('stage').innerHTML=s.html();if(s.after)s.after();$('count').textContent=(idx+1)+' / '+slides.length;document.querySelector('#bar i').style.width=((idx+1)/slides.length*100)+'%';$('flabel').textContent=s.label;$('back').disabled=idx===0;$('next').disabled=idx===slides.length-1;}
+function stepTo(n){if(n<0||n>=slides.length)return;idx=n;render();$('view').scrollTop=0;}
+$('back').onclick=()=>stepTo(idx-1);$('next').onclick=()=>stepTo(idx+1);
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')stepTo(idx+1);if(e.key==='ArrowLeft')stepTo(idx-1);});
+render();
+</script>
+</body>
+</html>

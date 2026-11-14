@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Busy Isn't Profitable</title>
+<style>
+:root{
+  --ink:#1f2433;--ink2:#454b60;--muted:#6b7186;--line:#e1e3ee;--bg:#f5f6fb;--paper:#fff;
+  --pri:#4b5bd6;--priDk:#3a48b8;
+  --lav:#ece9ff;--lavInk:#4b3fb0;--mint:#dff4ea;--mintInk:#1f7a52;--peach:#ffe7dc;--peachInk:#b4512c;
+  --sky:#e1efff;--skyInk:#2e5f9e;--butter:#fff3cc;--butterInk:#8a6200;
+  --pos:#1f8a5b;--neg:#c2483a;--r-lg:20px;--r-md:14px;--r-sm:10px
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:17px;line-height:1.5}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+#app{height:100dvh;display:grid;grid-template-rows:auto 5px 1fr auto}
+
+header{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,40px)}
+.brand-t{font-weight:700;font-size:1.05rem}
+.brand-s{font-size:.8rem;color:var(--muted)}
+.hbtns{display:flex;gap:8px;align-items:center}
+.hbtn{background:var(--lav);border:0;color:var(--lavInk);border-radius:var(--r-sm);padding:8px 12px;font-size:.88rem;font-weight:650}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+#bar{background:var(--line)}#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b8b0ff,#8fd3b6,#ffc2a6);transition:width .3s}
+
+main{overflow:auto}
+.stage{max-width:1160px;margin:0 auto;padding:clamp(16px,3vh,28px) clamp(16px,3vw,40px) 30px}
+.path{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.path span{font-size:.78rem;font-weight:650;padding:4px 10px;border-radius:99px;background:#eceef6;color:var(--muted)}
+.path span.on{background:var(--pri);color:#fff}
+.path span.done{background:var(--lav);color:var(--lavInk)}
+h1{font-size:clamp(2.2rem,4.8vw,3.7rem);line-height:1.04;margin:0 0 12px;letter-spacing:-.02em;max-width:16ch}
+h2{font-size:clamp(1.6rem,3.1vw,2.4rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.015em;max-width:28ch}
+h3{font-size:1.1rem;margin:0 0 6px;line-height:1.25}
+p{margin:0 0 10px}
+.lead{font-size:clamp(1.03rem,1.6vw,1.2rem);color:var(--ink2);max-width:64ch;margin-bottom:18px}
+.muted{color:var(--muted)}.small{font-size:.86rem}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;min-width:0}
+.lav{background:var(--lav);border-color:transparent}.mint{background:var(--mint);border-color:transparent}
+.peach{background:var(--peach);border-color:transparent}.sky{background:var(--sky);border-color:transparent}.butter{background:var(--butter);border-color:transparent}
+.big{font-size:clamp(2.2rem,4.6vw,3.3rem);font-weight:750;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums;font-weight:700}
+.src{font-size:.8rem;color:var(--muted);margin-top:10px}
+.src a,.refs a{color:var(--pri);font-weight:600}
+.take{margin-top:16px;padding:14px 16px;border-radius:var(--r-md);background:#fff;border-left:5px solid var(--pri);box-shadow:0 1px 0 var(--line)}
+.take b{color:var(--pri)}
+.fb{border-radius:var(--r-md);padding:13px 15px;margin-top:12px;background:var(--sky);font-size:.95rem}
+.fb.good{background:var(--mint)}.fb.bad{background:var(--peach)}.fb.warn{background:var(--butter)}
+.fadein{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.btn{border:0;border-radius:var(--r-sm);padding:11px 16px;font-weight:650;background:var(--pri);color:#fff}
+.btn:hover{background:var(--priDk)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.choice{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:var(--r-md);padding:13px 14px;transition:border-color .15s,background .15s}
+.choice b{display:block}
+.choice span{font-size:.88rem;color:var(--muted)}
+.choice:hover{border-color:#b7bdf0}
+.choice.sel{border-color:var(--pri);background:#f1f2ff}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:10px 14px;font-weight:600}
+.opt.ok{border-color:var(--pos);background:var(--mint)}.opt.no{border-color:var(--neg);background:var(--peach)}.opt.sel{border-color:var(--pri);background:#f1f2ff}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.slider label{display:flex;justify-content:space-between;font-size:.9rem;font-weight:650;color:var(--ink2);margin-top:12px}
+input[type=range]{width:100%;accent-color:var(--pri)}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kv div{border-radius:var(--r-md);padding:12px 14px;background:var(--bg)}
+.kv .l{font-size:.82rem;color:var(--ink2);font-weight:600}
+.kv .v{font-size:1.4rem;font-weight:750;font-variant-numeric:tabular-nums}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+.bars{display:grid;gap:10px}
+.barRow{display:grid;grid-template-columns:130px 1fr 110px;gap:10px;align-items:center;font-size:.92rem}
+.track{height:22px;background:#eceef6;border-radius:8px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:8px;transition:width .3s}
+.barRow b{text-align:right;font-variant-numeric:tabular-nums}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:8px 14px;font-weight:650;font-size:.9rem}
+.tabs button[aria-selected=true]{background:var(--pri);border-color:var(--pri);color:#fff}
+.more{border:0;background:none;color:var(--pri);font-weight:650;padding:0;margin-top:8px}
+.steps6{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.steps6 div{border-radius:var(--r-md);padding:12px;font-size:.88rem}
+.steps6 b{display:block;font-size:.95rem;margin-bottom:2px}
+.brief{font-size:1.02rem;line-height:1.55;padding:18px;border-radius:var(--r-md);background:var(--lav);color:var(--ink)}
+.refs{margin:0;padding-left:20px;display:grid;gap:8px;font-size:.92rem}
+.carry{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.carry span{font-size:.82rem;padding:5px 10px;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--ink2)}
+.carry b{color:var(--ink)}
+
+footer{background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(16px,3vw,40px)}
+.flabel{font-size:.9rem;color:var(--muted);font-weight:600}
+.fnav{display:flex;gap:8px}
+.fnav button{border:1px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:10px 18px;font-weight:650}
+.fnav .nx{background:var(--pri);color:#fff;border-color:var(--pri)}
+.fnav button:disabled{opacity:.35;cursor:not-allowed}
+.ov{position:fixed;inset:0;background:rgba(31,36,51,.4);display:flex;justify-content:center;align-items:center;z-index:50}
+.panel{background:#fff;border-radius:var(--r-lg);padding:22px;width:min(720px,94vw);max-height:88dvh;overflow:auto}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.menu button{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:var(--r-sm);padding:10px 12px;font-weight:600;font-size:.9rem}
+.menu button:hover{background:var(--lav)}
+
+@media(max-width:900px){
+  .g2,.g3,.g4,.kv,.steps6,.menu{grid-template-columns:1fr}
+  .barRow{grid-template-columns:90px 1fr 92px}
+  .brand-s,.flabel{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{header,footer,#bar,.path,.noprint{display:none!important}#app{display:block;height:auto}main{overflow:visible}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div><div class="brand-t">Busy Isn't Profitable</div><div class="brand-s">The business of selling · Designed and developed by Dr Sanjay Chib</div></div>
+  <div class="hbtns"><button class="hbtn" id="menuBtn">Contents</button><span class="count" id="count"></span></div>
+</header>
+<div id="bar"><i></i></div>
+<main id="view"><div class="stage" id="stage"></div></main>
+<footer><span class="flabel" id="flabel"></span><div class="fnav"><button id="back">Back</button><button class="nx" id="next">Next</button></div></footer>
+</div>
+<div id="overlay"></div>
+
+<script>
+'use strict';
+/* ---------- illustrative model (all business figures are invented for practice) ---------- */
+const firms={
+ boutique:{name:'Independent boutique hotel',short:'Independent hotel',rooms:36,rate:255,variable:58,fixed:98000,budget:11000,desc:'The owner is close to daily cash decisions. Differentiation helps, but every campaign and every empty room matters.'},
+ regional:{name:'Regional hotel operator',short:'Regional operator',rooms:75,rate:215,variable:52,fixed:192000,budget:23000,desc:'Shared systems and some scale help, but regional demand and payroll exposure still shape decisions.'},
+ brand:{name:'Brand-affiliated hotel',short:'Brand-affiliated hotel',rooms:110,rate:230,variable:62,fixed:300000,budget:35000,desc:'Brand distribution may help generate demand, while contractual costs, standards and complexity constrain choices.'}
+};
+const BASE_OCC=62;
+const shocks={
+ stable:{name:'normal demand',title:'Normal market',sub:'Bookings follow the original plan.',delta:0,extra:0,note:'Local bookings follow the baseline; no shock assumed.'},
+ event:{name:'a regional sports championship',title:'Championship announced',sub:'More visitors, stronger room demand.',delta:12,extra:0,note:'The championship adds 12 percentage points to starting occupancy in this example.'},
+ weak:{name:'weaker leisure demand',title:'Demand weakens',sub:'Consumers cut discretionary travel.',delta:-12,extra:0,note:'Weaker demand removes 12 percentage points from starting occupancy in this example.'},
+ cost:{name:'an operating cost shock',title:'Cost shock',sub:'Demand is steady, but operating costs rise.',delta:0,extra:12,note:'Each occupied room costs CHF 12 more to serve in this example.'}
+};
+const owners={growth:['Grow faster','Win customers and market share, even if returns take longer.','The owner prioritises customer acquisition and market share. Extra volume can be attractive, but it needs a credible route to sustainable contribution.'],cash:['Protect cash','Support near-term contribution and careful spending.','The owner prioritises near-term cash generation. Net contribution and spending discipline carry extra weight.'],resilience:['Build resilience','Reduce dependence and protect the long-term business.','The owner prioritises long-term resilience. Diversified demand, customer access and the ability to withstand shocks matter.']};
+const strategies={
+ hold:['Hold rate, focus on service','Protect positioning; no extra demand assumed.'],
+ discount:['Discount to stimulate demand','Lower rate; occupancy may rise.'],
+ package:['Create a value-added package','Modest rate lift; extra delivery cost.'],
+ ota:['Boost visibility on booking platforms','More bookings possible; commission applies.']
+};
+const S={owner:null,firm:'boutique',shock:'stable',occ:BASE_OCC,adr:255,alloc:[40,35,25],strategy:'hold',hook:0,world:null,tab:'sector',market:'swiss',invest:null,why:{}};
+
+const $=id=>document.getElementById(id);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const chf=n=>(n<0?'−':'')+'CHF '+Math.abs(Math.round(n)).toLocaleString('en-US');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function baseline(){const f=firms[S.firm],s=shocks[S.shock];S.occ=clamp(BASE_OCC+s.delta,25,95);S.adr=f.rate;}
+function forecast(){const f=firms[S.firm],s=shocks[S.shock];const nights=f.rooms*30,sold=nights*S.occ/100,revenue=sold*S.adr,varCost=f.variable+s.extra,contribution=revenue-sold*varCost,base=contribution-f.fixed;return{f,s,nights,sold,revenue,varCost,contribution,base};}
+function outcome(){
+ const m=forecast();let occ=S.occ,adr=S.adr,extras=0,commission=0,meaning='',risk='';
+ switch(S.strategy){
+  case 'discount':occ=clamp(occ+9,0,95);adr*=.88;meaning='Discounting may bring extra bookings, but each room earns less. Compare total contribution, not occupancy alone.';risk='Discounts can weaken price positioning and attract guests who would have booked at the original price anyway.';break;
+  case 'package':occ=clamp(occ+2,0,95);adr*=1.06;extras=12;meaning='A value-added package can set the offer apart while protecting the headline price.';risk='Extra services cost money to deliver. The assumed rate lift and demand response may not happen.';break;
+  case 'ota':occ=clamp(occ+10,0,95);commission=.17*.40;meaning='A booking platform can reach customers you could not reach directly, but commission reduces the revenue you keep.';risk='Not every platform booking is extra business. Guests who would have booked directly may move to the platform.';break;
+  default:meaning='Holding the rate avoids discounting. Service quality and existing demand become central.';risk='If demand is genuinely weakening, doing nothing could leave sellable rooms empty.';
+ }
+ const roomRev=m.nights*occ/100*adr,cost=m.nights*occ/100*(m.varCost+extras),comm=roomRev*commission,profit=roomRev-cost-comm-m.f.fixed-m.f.budget;
+ return{...m,occ2:occ,adr2:adr,roomRev,profit,meaning,risk,holdProfit:m.base-m.f.budget};
+}
+function changeAllocation(i,next){const v=S.alloc.slice(),nv=clamp(next,0,100),rem=100-nv,o=[0,1,2].filter(x=>x!==i),old=v[o[0]]+v[o[1]];let v0=old?Math.round(rem*v[o[0]]/old/5)*5:Math.round(rem/10)*5;v0=clamp(v0,0,rem);v[i]=nv;v[o[0]]=v0;v[o[1]]=rem-v0;S.alloc=v;}
+
+const chapters=['Start','World','Owners','Profit','Businesses','Customers','Forecast & budget','Decide','Finish'];
+function path(c){return '<div class="path" aria-hidden="true">'+chapters.map((n,i)=>`<span class="${i===c?'on':i<c?'done':''}">${n}</span>`).join('')+'</div>';}
+function carry(){const f=firms[S.firm];return `<div class="carry"><span>Owner: <b>${S.owner?owners[S.owner][0]:'not chosen yet'}</b></span><span>Business: <b>${f.short}</b></span><span>Market: <b>${shocks[S.shock].title}</b></span></div>`;}
+
+/* ---------- slides ---------- */
+const slides=[
+{label:'Busy is not the same as profitable',c:0,html:()=>`${path(0)}<div class="g2" style="align-items:start">
+  <div><h1>Can a full hotel make less money?</h1><p class="lead">Drag the discount. Watch what happens to rooms sold, and to the money left at the end of the month.</p>
+  <div class="card"><div class="slider"><label for="hk"><span>Discount on the room rate</span><span id="hkv">${S.hook}%</span></label><input id="hk" type="range" min="0" max="30" step="5" value="${S.hook}"></div>
+  <div class="bars" style="margin-top:14px"><div class="barRow"><span>Rooms sold</span><div class="track"><i id="hkOcc" style="background:#8fd3b6"></i></div><b id="hkOccV"></b></div>
+  <div class="barRow"><span>Money left</span><div class="track"><i id="hkPro" style="background:#b8b0ff"></i></div><b id="hkProV"></b></div></div>
+  <div class="fb warn" id="hkMsg"></div><p class="small muted" style="margin:8px 0 0">An invented 36-room hotel, one month. Simplified for illustration.</p></div></div>
+  <div class="card lav"><h3>One story. Six connected questions.</h3><p class="small" style="color:var(--ink2)">A hotel can be busy and still disappoint its owner. A business can grow sales and still run short of cash. To see why, follow the decisions from the outside world to the sales floor.</p>
+  <div style="display:grid;gap:8px;margin-top:10px">${[['World','What is changing around the business?'],['Owners','What do the investors need?'],['Businesses','What can this type of business do?'],['Customers','How is demand shifting?'],['Forecast & budget','What can we sell, and what can we spend?'],['Decide','Which sales response makes sense?']].map((x,i)=>`<div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start"><span class="num" style="color:var(--lavInk)">${i+1}</span><span><b>${x[0]}</b> <span class="small" style="color:var(--ink2)">${x[1]}</span></span></div>`).join('')}</div></div></div>`,
+ after:()=>{const f0=firms.boutique,p0=f0.rooms*30*BASE_OCC/100*(f0.rate-f0.variable)-f0.fixed-f0.budget;const upd=()=>{const d=S.hook/100,f=firms.boutique,occ=Math.min(95,BASE_OCC+S.hook*.9),sold=f.rooms*30*occ/100,rate=f.rate*(1-d),pro=sold*(rate-f.variable)-f.fixed-f.budget;
+  $('hkv').textContent=S.hook+'%';$('hkOcc').style.width=occ+'%';$('hkOccV').textContent=Math.round(occ)+'%';$('hkPro').style.width=Math.max(2,pro/25000*100)+'%';$('hkProV').textContent=chf(pro);
+  $('hkMsg').innerHTML=S.hook===0?'<b>Start here.</b> 62% of rooms sold at full price. Now try a discount.':`<b>Busier, but poorer.</b> The hotel sells more rooms, yet keeps ${chf(p0-pro)} less this month. Every lesson today builds on this.`;};
+  $('hk').addEventListener('input',e=>{S.hook=+e.target.value;upd();});upd();}},
+
+{label:'Your job today',c:0,html:()=>`${path(0)}<h2>Your job: advise a hospitality business on its next sales move.</h2><p class="lead">Explore what changes around it, what its owners need and what it can realistically do. Then make a sales decision and defend it with evidence.</p>
+  <div class="g4">${[['Interpret','market signals to explain changes in demand.','lav'],['Compare','how owners and business economics shape sales decisions.','mint'],['Apply','a simple sales forecast and spending budget to assess options.','peach'],['Recommend','and justify a sales response when demand, prices or costs change.','sky']].map(x=>`<div class="card ${x[2]}"><h3>${x[0]}</h3><p class="small" style="margin:0;color:var(--ink2)">${x[1]}</p></div>`).join('')}</div>
+  <div class="take"><b>How it works:</b> your choices carry forward. The owner you pick, the business you run and the market you face all shape the final decision.</div>`},
+
+{label:'1 · The world changes',c:1,html:()=>`${path(1)}<h2>Tourism can grow globally while your business struggles locally.</h2><p class="lead">Big industry numbers show opportunity, not guaranteed success for every hotel, airline or destination.</p>
+  <div class="g3">
+   <div class="card mint"><div class="small">Travel and tourism, 2025</div><div class="big">US$11.6T</div><p class="small" style="margin:6px 0 0">contribution to world GDP, including indirect effects</p><div class="src">WTTC, 2026 · <a href="https://wttc.org/news/travel-tourism-sees-best-year-ever-outpacing-the-global-economy-in-2025/" target="_blank" rel="noopener">Source</a></div></div>
+   <div class="card sky"><div class="small">International arrivals, 2025</div><div class="big">1.52B</div><p class="small" style="margin:6px 0 0">up 4% on the year before</p><div class="src">UN Tourism, 2026 · <a href="https://www.untourism.int/news/international-tourist-arrivals-up-4-in-2025-reflecting-strong-travel-demand-around-the-world" target="_blank" rel="noopener">Source</a></div></div>
+   <div class="card peach"><div class="small">But look closer</div><div class="big">2.0%</div><p class="small" style="margin:6px 0 0">forecast global airline net profit margin, 2026</p><div class="src">IATA, June 2026 · <a href="https://www.iata.org/en/publications/economics/reports/global-outlook-for-air-transport-june-2026" target="_blank" rel="noopener">Source</a></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>International tourism is growing. Should every independent hotel raise its forecast?</h3>
+  <div class="row"><button class="opt ${S.world==='yes'?'no':''}" onclick="setS('world','yes')">Yes, demand is rising</button><button class="opt ${S.world==='no'?'ok':''}" onclick="setS('world','no')">Not without local evidence</button></div>
+  ${S.world?`<div class="fb ${S.world==='no'?'good':'bad'} fadein">${S.world==='no'?'<b>Right.</b>':'<b>Careful.</b>'} Global demand may rise while a country loses flights, a region has weak snow or one hotel loses market share.</div>`:''}</div>
+  <div class="take"><b>Takeaway:</b> global ≠ national ≠ regional ≠ your business. A useful forecast moves from broad signals to local evidence.</div>`},
+
+{label:'2 · Owners and investors',c:2,html:()=>`${path(2)}<h2>Not every owner wants the same thing.</h2><p class="lead">Investors commit money for different reasons. Some want growth. Others need cash or lower risk. Those priorities shape acceptable spending, pricing and expansion.</p>
+  <div class="g2" style="align-items:start">
+   <div class="card butter"><div class="small">Investment in travel and tourism, 2025</div><div class="big">US$1T+</div><p class="small" style="margin:8px 0 0;color:var(--ink2)">Investors are funding very different business models. Investment is not the same as profit: the owner still needs a path to demand, cash and returns.</p><div class="src">WTTC, 2026 · <a href="https://wttc.org/news/global-trends-report-trillion-investment-travel-tourism-vote-confidence/" target="_blank" rel="noopener">Source</a></div></div>
+   <div><h3>What matters most to your hotel's owner this year?</h3><p class="small muted">Choose one. It carries through to your final decision.</p>
+   <div style="display:grid;gap:8px">${Object.entries(owners).map(([k,o])=>`<button class="choice ${S.owner===k?'sel':''}" onclick="setS('owner','${k}')"><b>${o[0]}</b><span>${o[1]}</span></button>`).join('')}</div>
+   ${S.owner?`<div class="fb fadein">${owners[S.owner][2]}</div>`:''}</div>
+  </div>
+  <div class="take"><b>Takeaway:</b> sales targets follow strategic priorities. The same booking opportunity can look attractive to a growth investor and too risky to an owner who needs cash now.</div>`},
+
+{label:'How much profit is enough?',c:3,html:()=>{
+  const tabs=[['sector','1 · Different sectors'],['place','2 · Different places'],['invest','3 · Investor’s choice']];
+  const markets={swiss:['Switzerland',16.8,'2024','KATAG Swiss hotel benchmarking','https://www.katag.ch/de/KATAG-Kennzahlenbroschueren','What must an alpine hotel forecast and sell in shoulder seasons to cover its costs?'],uk:['Central London',46.8,'2025','Cushman & Wakefield, selected branded full-service hotels','https://www.hospitalitynet.org/news/4131160/londons-hotels-maintain-strong-profitability-despite-softer-revpar-in-2025','How could a city hotel protect operating profit if corporate demand weakens and wages rise?'],india:['India',46.4,'2024','HVS ANAROCK / HotStats, sampled hotels','https://www.hvs.com/Print/HVS-ANAROCK-India-Hospitality-Industry-Overview-2024?id=10158','When demand grows, should management prioritise rate, occupancy or extra sales?']};
+  const m=markets[S.market];
+  const inv={a:'A earns more profit in total, but needs seven times the capital. A higher margin alone does not make it the better investment.',b:'B earns much more for each franc invested, but you still need to judge risk, financing and future cash flow.',more:'Good judgement. Ask about risk, cash flow, growth and the return investors require before choosing.'};
+  let body='';
+  if(S.tab==='sector')body=`<h3>Same $100 in sales. Different dollars left.</h3><div class="bars" style="margin-top:12px">${[['Air transport',2.51,'#ffc2a6'],['Restaurants',9.37,'#ffd98a'],['Hotel / gaming',10.38,'#8fd3b6'],['Software',25.49,'#b8b0ff']].map(x=>`<div class="barRow"><span>${x[0]}</span><div class="track"><i style="width:${x[1]/25.49*100}%;background:${x[2]}"></i></div><b>${x[1]}%</b></div>`).join('')}</div><p class="small muted" style="margin-top:10px">Net profit margins of US listed companies by sector, January 2026. Not typical results for an independent business. (Damodaran, 2026) · <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/margin.html" target="_blank" rel="noopener" style="color:var(--pri);font-weight:600">Data set</a></p><div class="fb">Is the company with the highest percentage necessarily the best investment? Think about capital, risk and growth, not just margins.</div>`;
+  if(S.tab==='place')body=`<h3>How different are hotel operating margins?</h3><div class="row">${Object.entries(markets).map(([k,x])=>`<button class="opt ${S.market===k?'sel':''}" onclick="setS('market','${k}')">${x[0]}</button>`).join('')}</div>
+   <div class="g2" style="margin-top:12px"><div class="card mint"><div class="big">${m[1].toFixed(1)}%</div><p class="small" style="margin:6px 0 0">GOP margin · ${m[0]} · ${m[2]}</p><div class="track" style="height:10px;margin-top:10px;background:#fff"><i style="width:${m[1]/50*100}%;background:var(--mintInk)"></i></div><div class="src">${m[3]} · <a href="${m[4]}" target="_blank" rel="noopener">Source</a></div></div><div class="card"><b>Commercial question:</b> ${m[5]}</div></div>
+   <p class="small muted" style="margin-top:10px">Different samples and years, not national averages. GOP is before some ownership costs and is not net profit or investor return.</p>`;
+  if(S.tab==='invest')body=`<h3>Which business would you finance?</h3><p class="small muted">Invented example, CHF.</p><div class="g2"><div class="card sky"><b>Business A · 14% margin</b><p class="small" style="margin:6px 0 0">CHF 12m sales · CHF 1.68m net profit · CHF 28m capital invested</p></div><div class="card peach"><b>Business B · 5% margin</b><p class="small" style="margin:6px 0 0">CHF 12m sales · CHF 0.6m net profit · CHF 4m capital invested</p></div></div>
+   <div class="row">${[['a','Choose A'],['b','Choose B'],['more','Need more information']].map(([k,t])=>`<button class="opt ${S.invest===k?'sel':''}" onclick="setS('invest','${k}')">${t}</button>`).join('')}</div>${S.invest?`<div class="fb fadein">${inv[S.invest]}</div>`:''}<p class="small muted" style="margin-top:8px">Profit divided by capital is a discussion prompt, not a formal return calculation.</p>`;
+  return `${path(3)}<h2>How much profit is enough?</h2><p class="lead">Profit depends on what you sell, where you operate and how much capital you need. Explore one question at a time.</p>
+  <div class="tabs" role="tablist">${tabs.map(([k,t])=>`<button role="tab" aria-selected="${S.tab===k}" onclick="setS('tab','${k}')">${t}</button>`).join('')}</div><div class="card">${body}</div>
+  <div class="take"><b>Business implication:</b> a sales forecast must support more than volume. Owners need to know whether likely sales will cover costs and justify the capital at risk.</div>`;}},
+
+{label:'3 · Different businesses',c:4,html:()=>`${path(4)}<h2>Same industry. Different economics.</h2><p class="lead">All three must sell rooms, but scale, costs, distribution and access to capital differ. Choose the business you will advise.</p>
+  <div class="g3">${Object.entries(firms).map(([k,f],i)=>`<button class="choice ${S.firm===k?'sel':''}" onclick="S.firm='${k}';baseline();render()"><b>${f.name}</b><span>${f.rooms} rooms · CHF ${f.rate} average rate</span><p class="small" style="margin:8px 0 0;color:var(--ink2)">${['Limited marketing scale, faster local decisions, direct exposure to cash pressure.','Some shared systems and buying power; several markets to balance.','Brand standards, loyalty and distribution reach, but contract costs and less autonomy.'][i]}</p></button>`).join('')}</div>
+  <div class="fb fadein"><b>${firms[S.firm].name}.</b> ${firms[S.firm].desc} <span class="small">Monthly model: ${firms[S.firm].rooms} rooms, cost per occupied room CHF ${firms[S.firm].variable}, fixed costs ${chf(firms[S.firm].fixed)}, sales budget ${chf(firms[S.firm].budget)}.</span></div>
+  <div class="g2" style="margin-top:14px"><div class="card lav"><div class="small">Marriott, year-end 2025</div><div class="big">51 <span style="font-size:.5em;font-weight:650">of 9,805</span></div><p class="small" style="margin:6px 0 0">properties owned or leased. Most run under franchise, licence or management arrangements.</p><div class="src">Marriott International, 2026 · <a href="https://marriott.gcs-web.com/static-files/9cf0e9b0-bbfa-48a6-9e21-ffbdbc4b2d78" target="_blank" rel="noopener">Annual report</a></div></div>
+  <div class="card"><h3>Who bears the property costs?</h3><p class="small" style="color:var(--ink2)">Brand reach and owning the building are not the same. Franchised owners usually fund and run the property while paying for the brand; managed hotels have an owner and a separate operator. Real contracts vary.</p></div></div>
+  <div class="take"><b>Takeaway:</b> a model that works for one business may fail in another. Know the business before copying a competitor's sales strategy.</div>`},
+
+{label:'4 · Customers and competitors',c:5,html:()=>{const m=forecast();return `${path(5)}<h2>The booking forecast just changed.</h2><p class="lead">Customers change plans. Competitors discount. Events create demand. Choose what happens in your market and see the starting forecast move.</p>
+  <div class="g4">${Object.entries(shocks).map(([k,s])=>`<button class="choice ${S.shock===k?'sel':''}" onclick="S.shock='${k}';baseline();render()"><b>${s.title}</b><span>${s.sub}</span></button>`).join('')}</div>
+  <div class="g3" style="margin-top:14px"><div class="card sky"><div class="small">Expected occupancy before your decisions</div><div class="big">${clamp(BASE_OCC+m.s.delta,25,95)}%</div></div><div class="card mint"><div class="small">Starting average room rate</div><div class="big">${chf(m.f.rate)}</div></div><div class="card"><p class="small" style="margin:0;color:var(--ink2)">${m.s.note} These are teaching assumptions, not predictions.</p></div></div>
+  <div class="card peach" style="margin-top:14px"><div class="g2" style="align-items:center"><div><div class="small">Booking Holdings, marketing expense 2025</div><div class="big">US$8.186B</div></div><p class="small" style="margin:0;color:var(--ink2)">Platforms spend heavily to win travellers. This is a company-wide figure, not a benchmark for a hotel budget. <span class="src">· <a href="https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm" target="_blank" rel="noopener">SEC Form 10-K</a></span></p></div></div>
+  <div class="take"><b>Takeaway:</b> forecasts are revised, not produced once a year. A forecast should change when the evidence changes.</div>`;}},
+
+{label:'5 · Forecast or budget?',c:6,html:()=>`${path(6)}<h2>What can we expect to sell, and what can we afford to do?</h2><p class="lead">Managers turn uncertainty into a plan with two tools.</p>
+  <div class="g2"><div class="card sky"><h3>Forecast: what are we likely to sell?</h3><p class="small" style="color:var(--ink2)">An evidence-based estimate of bookings and sales for a period, updated with reservations, past sales, events and competitor activity.</p><p class="small" style="margin:0"><b>Why it matters:</b> it tells the hotel when to adjust prices, target new guests or prepare for a quiet month.</p></div>
+  <div class="card mint"><h3>Budget: what is our financial plan?</h3><p class="small" style="color:var(--ink2)">A plan for expected income and spending, deciding what to commit to staff, service, marketing and investment.</p><p class="small" style="margin:0"><b>Why it matters:</b> a weaker forecast may mean reconsidering spending, while protecting what generates future sales.</p></div></div>
+  <div class="card" style="margin-top:14px"><h3>How they fit together</h3><div class="row" style="align-items:center">${['Forecast sales','Plan spending','Act','Compare with actual','Revise'].map((x,i)=>`<span class="opt" style="cursor:default">${x}</span>${i<4?'<span class="muted">→</span>':''}`).join('')}</div></div>
+  <div class="take"><b>Forecast ≠ target ≠ budget.</b> Forecast: what you reasonably expect. Target: what you want to achieve. Budget: what you plan to spend.</div>`},
+
+{label:'5 · Estimate likely sales',c:6,html:()=>`${path(6)}${carry()}<h2>Estimate what the hotel may sell in the next 30 days.</h2><p class="lead">Your market event has changed demand. Adjust occupancy and rate; the forecast updates immediately.</p>
+  <div class="g2" style="align-items:start"><div class="card">
+   <div class="slider"><label for="occ"><span>Expected room occupancy</span><span id="occL"></span></label><input id="occ" type="range" min="25" max="95" value="${S.occ}"></div>
+   <div class="slider"><label for="adr"><span>Average daily room rate</span><span id="adrL"></span></label><input id="adr" type="range" min="120" max="360" step="5" value="${S.adr}"></div>
+   <p class="small muted" style="margin-top:12px">Rooms × 30 days × occupancy × average rate = forecast room revenue.</p>
+   <div class="bars" style="margin-top:8px"><div class="barRow"><span>Available</span><div class="track"><i style="width:100%;background:#d9dcf0"></i></div><b id="avail"></b></div><div class="barRow"><span>Expected sold</span><div class="track"><i id="soldBar" style="background:#8fd3b6"></i></div><b id="soldV"></b></div></div>
+   <p class="small muted" style="margin-top:8px">Unsold rooms cannot be stored for next month.</p></div>
+  <div class="card"><h3>What does the forecast mean?</h3><div class="kv"><div><div class="l">Room revenue</div><div class="v" id="fRev"></div></div><div><div class="l">Left after room costs</div><div class="v" id="fCon"></div></div><div><div class="l">Fixed monthly costs</div><div class="v" id="fFix"></div></div><div><div class="l">Left before sales spending</div><div class="v" id="fBase"></div></div></div>
+  <p class="small muted" style="margin-top:10px">Start with room revenue, subtract the cost of serving occupied rooms, then fixed costs. Sales spending comes next. Simplified: no financing or taxes.</p></div></div>`,
+ after:()=>{const upd=()=>{const m=forecast();$('occL').textContent=S.occ+'%';$('adrL').textContent=chf(S.adr);$('avail').textContent=m.nights.toLocaleString('en-US');$('soldV').textContent=Math.round(m.sold).toLocaleString('en-US');$('soldBar').style.width=S.occ+'%';$('fRev').textContent=chf(m.revenue);$('fCon').textContent=chf(m.contribution);$('fFix').textContent=chf(m.f.fixed);const b=$('fBase');b.textContent=chf(m.base);b.className='v '+(m.base<0?'neg':'pos');};
+  $('occ').addEventListener('input',e=>{S.occ=+e.target.value;upd();});$('adr').addEventListener('input',e=>{S.adr=+e.target.value;upd();});upd();}},
+
+{label:'5 · Plan the sales spending',c:6,html:()=>`${path(6)}${carry()}<h2>Plan how to use a limited sales budget.</h2><p class="lead">You control only the sales spending budget, one small part of the hotel's costs. Split it across three uses. The total cannot change.</p>
+  <div class="g2" style="align-items:start"><div class="card">${[['Demand generation','Marketing, outreach and tactical offers.'],['Direct sales capability','Website conversion, CRM, guest communication.'],['Service readiness','Training, staffing flexibility, delivery quality.']].map((x,i)=>`<div class="slider"><label for="al${i}"><span>${x[0]}</span><span id="alv${i}"></span></label><input id="al${i}" type="range" min="0" max="100" step="5" value="${S.alloc[i]}"><div class="small muted">${x[1]}</div></div>`).join('')}</div>
+  <div class="card lav"><div class="small">Monthly sales budget · ${firms[S.firm].short}</div><div class="big">${chf(firms[S.firm].budget)}</div><div class="bars" style="margin-top:14px" id="alBars"></div><p class="small" style="margin-top:12px;color:var(--ink2)">Moving one slider redistributes the others so the total stays at 100%. The split shows your priorities; it does not by itself create bookings.</p></div></div>
+  <div class="take"><b>Business implication:</b> if expected sales fall, ask which spending still protects future demand and delivery quality.</div>`,
+ after:()=>{const cols=['#b8b0ff','#8fd3b6','#ffc2a6'],names=['Demand','Direct sales','Service'];const upd=()=>{const b=firms[S.firm].budget;S.alloc.forEach((v,i)=>{$('al'+i).value=v;$('alv'+i).textContent=v+'%';});$('alBars').innerHTML=S.alloc.map((v,i)=>`<div class="barRow"><span>${names[i]}</span><div class="track" style="background:#fff"><i style="width:${v}%;background:${cols[i]}"></i></div><b>${chf(b*v/100)}</b></div>`).join('');};
+  [0,1,2].forEach(i=>$('al'+i).addEventListener('input',e=>{changeAllocation(i,+e.target.value);upd();}));upd();}},
+
+{label:'6 · Choose a sales response',c:7,html:()=>{const o=outcome();const dl=o.profit-o.holdProfit;const sc=Math.max(Math.abs(o.holdProfit),Math.abs(o.profit),1);
+  const caution={cash:'This owner will focus on near-term contribution and whether the spending is supportable.',growth:'This owner may accept some immediate cost for stronger demand, if the economics are credible.',resilience:'This owner will ask how dependent the strategy makes the business on particular channels or customers.'}[S.owner||'cash'];
+  return `${path(7)}${carry()}<h2>Now make the sale, without losing the business.</h2><p class="lead">Choose how to compete for bookings, then compare the result with simply holding the rate.</p>
+  <div class="g4">${Object.entries(strategies).map(([k,s])=>`<button class="choice ${S.strategy===k?'sel':''}" onclick="setS('strategy','${k}')"><b>${s[0]}</b><span>${s[1]}</span></button>`).join('')}</div>
+  <div class="g2" style="margin-top:14px;align-items:start"><div class="card"><div class="kv"><div><div class="l">Revised occupancy</div><div class="v">${o.occ2.toFixed(0)}%</div></div><div><div class="l">Revised average rate</div><div class="v">${chf(o.adr2)}</div></div><div><div class="l">Revised room revenue</div><div class="v">${chf(o.roomRev)}</div></div><div><div class="l">Left after sales spending</div><div class="v ${o.profit<0?'neg':'pos'}">${chf(o.profit)}</div></div></div>
+   <div class="bars" style="margin-top:14px"><div class="barRow"><span>Hold the rate</span><div class="track"><i style="width:${Math.abs(o.holdProfit)/sc*100}%;background:#d9dcf0"></i></div><b>${chf(o.holdProfit)}</b></div><div class="barRow"><span>Your choice</span><div class="track"><i style="width:${Math.abs(o.profit)/sc*100}%;background:${o.profit<0?'#ffc2a6':'#8fd3b6'}"></i></div><b>${chf(o.profit)}</b></div></div></div>
+  <div><div class="fb"><b>Compared with holding the rate:</b> ${dl>=0?'+':'−'}${chf(Math.abs(dl)).replace('−','')} this month. ${caution}</div><div class="fb good"><b>What it means:</b> ${o.meaning}</div><div class="fb bad"><b>What could go wrong:</b> ${o.risk}</div>
+  <button class="more" onclick="S.why.assume=!S.why.assume;render()">${S.why.assume?'Hide':'Show'} the assumptions</button>${S.why.assume?`<p class="small muted fadein">Discount: rate −12%, occupancy +9 points. Package: rate +6%, occupancy +2 points, CHF 12 extra cost per occupied room. Platform push: occupancy +10 points, 17% commission on an assumed 40% of room revenue. Occupancy is capped at 95%. Every option deducts room costs, fixed costs and the full sales budget. Invented for practice, not empirical estimates.</p>`:''}</div></div>`;}},
+
+{label:'Defend your decision',c:8,html:()=>{const o=outcome(),f=o.f,s=o.s;const names={hold:'hold the current rate and focus on service',discount:'test a targeted discount',package:'launch a value-added package',ota:'use a booking-platform visibility push'};
+  const brief=`I advise the ${f.name.toLowerCase()} to ${names[S.strategy]}. The market assumption is ${s.name}; forecast occupancy is ${S.occ}% at ${chf(S.adr)} average rate before the action. The owner prioritises ${({cash:'cash generation',growth:'growth',resilience:'resilience'})[S.owner||'cash']}${S.owner?'':' (assumed)'}. I would split the ${chf(f.budget)} sales budget across demand generation (${S.alloc[0]}%), direct sales (${S.alloc[1]}%) and service readiness (${S.alloc[2]}%). The simplified model leaves ${chf(o.profit)} after sales spending, but the demand response is uncertain. I would monitor booking pace, channel mix and contribution, then revise the plan.`;
+  window.currentBrief=brief;
+  return `${path(8)}<h2>One recommendation. Three reasons.</h2><p class="lead">Finish with an argument a general manager or owner could actually use.</p>
+  <div class="brief">${esc(brief)}</div>
+  <div class="row noprint"><button class="btn" onclick="copyBrief()">Copy my recommendation</button><button class="btn ghost" onclick="window.print()">Print or save as PDF</button><button class="btn ghost" onclick="restart()">Start a new scenario</button><span class="small" id="cpy" style="align-self:center;color:var(--pos);font-weight:650"></span></div>
+  <div class="card" style="margin-top:14px"><h3>Discuss or write</h3><ol class="small" style="margin:6px 0 0;padding-left:18px;color:var(--ink2)"><li>Which market signal matters most?</li><li>What does the owner want?</li><li>Which forecast, cost or budget assumption is most uncertain?</li><li>What would make you change your mind next month?</li></ol></div>
+  <div class="steps6" style="margin-top:14px">${[['World','External events change demand and costs.','mint'],['Owners','Investment priorities shape acceptable risks.','butter'],['Businesses','Operating models shape available choices.','lav'],['Customers','Behaviour and competitors change who buys.','sky'],['Forecast + budget','Anticipate demand and allocate resources.','peach'],['Decide','Sell, learn, revise and adapt.','mint']].map(x=>`<div class="${x[2]}"><b>${x[0]}</b>${x[1]}</div>`).join('')}</div>
+  <div class="take"><b>Final implication:</b> sales strategy is not a fixed playbook or an isolated pricing calculation. It is how a business navigates change and turns limited resources into sustainable demand and results.</div>`;}},
+
+{label:'Sources',c:8,html:()=>`${path(8)}<h2>Sources</h2><div class="card"><ol class="refs">
+  <li>Booking Holdings Inc. (2026). <i>Annual report for fiscal year ended December 31, 2025 (Form 10-K).</i> <a href="https://www.sec.gov/Archives/edgar/data/1075531/000107553126000009/bkng-20251231.htm" target="_blank" rel="noopener">SEC filing</a></li>
+  <li>Cushman &amp; Wakefield, via Hospitality Net. (2025). <i>London's hotels maintain strong profitability.</i> <a href="https://www.hospitalitynet.org/news/4131160/londons-hotels-maintain-strong-profitability-despite-softer-revpar-in-2025" target="_blank" rel="noopener">Hospitality Net</a></li>
+  <li>Damodaran, A. (2026, January). <i>Margins by sector (US)</i> [Data set]. NYU Stern. <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/margin.html" target="_blank" rel="noopener">Data set</a></li>
+  <li>HVS ANAROCK. (2024). <i>India hospitality industry overview.</i> <a href="https://www.hvs.com/Print/HVS-ANAROCK-India-Hospitality-Industry-Overview-2024?id=10158" target="_blank" rel="noopener">HVS</a></li>
+  <li>International Air Transport Association. (2026, June). <i>Global outlook for air transport.</i> <a href="https://www.iata.org/en/publications/economics/reports/global-outlook-for-air-transport-june-2026" target="_blank" rel="noopener">IATA report</a></li>
+  <li>KATAG. (2024). <i>Swiss hotel benchmarking.</i> <a href="https://www.katag.ch/de/KATAG-Kennzahlenbroschueren" target="_blank" rel="noopener">KATAG</a></li>
+  <li>Marriott International, Inc. (2026). <i>2025 annual report.</i> <a href="https://marriott.gcs-web.com/static-files/9cf0e9b0-bbfa-48a6-9e21-ffbdbc4b2d78" target="_blank" rel="noopener">Investor relations</a></li>
+  <li>UN Tourism. (2026, January 20). <i>International tourist arrivals up 4% in 2025.</i> <a href="https://www.untourism.int/news/international-tourist-arrivals-up-4-in-2025-reflecting-strong-travel-demand-around-the-world" target="_blank" rel="noopener">UN Tourism</a></li>
+  <li>World Travel &amp; Tourism Council. (2026, April 14). <i>Travel &amp; tourism sees best year ever.</i> <a href="https://wttc.org/news/travel-tourism-sees-best-year-ever-outpacing-the-global-economy-in-2025/" target="_blank" rel="noopener">WTTC</a></li>
+  <li>World Travel &amp; Tourism Council. (2026, August 5). <i>Over $1 trillion investment in travel &amp; tourism.</i> <a href="https://wttc.org/news/global-trends-report-trillion-investment-travel-tourism-vote-confidence/" target="_blank" rel="noopener">WTTC</a></li>
+  </ol><p class="small muted" style="margin-top:12px">Published figures are cited above. Business profiles, scenarios and simulated effects are invented for practice.</p></div>`}
+];
+
+/* ---------- navigation ---------- */
+let idx=0;
+function setS(k,v){S[k]=v;render();}
+function render(){const s=slides[idx];$('stage').innerHTML=s.html();if(s.after)s.after();$('count').textContent=(idx+1)+' / '+slides.length;document.querySelector('#bar i').style.width=((idx+1)/slides.length*100)+'%';$('flabel').textContent=s.label;$('back').disabled=idx===0;$('next').disabled=idx===slides.length-1;}
+function stepTo(n){if(n<0||n>=slides.length)return;idx=n;render();$('view').scrollTop=0;}
+function restart(){Object.assign(S,{owner:null,firm:'boutique',shock:'stable',alloc:[40,35,25],strategy:'hold',world:null,invest:null,why:{}});baseline();stepTo(3);}
+function copyBrief(){const t=window.currentBrief||'';const done=ok=>{$('cpy').textContent=ok?'Copied':'Select and copy the text above';};if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>done(true),()=>fallback());else fallback();function fallback(){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();done(ok);}}
+$('back').onclick=()=>stepTo(idx-1);$('next').onclick=()=>stepTo(idx+1);
+document.addEventListener('keydown',e=>{const t=e.target.tagName;if(t==='INPUT'||t==='TEXTAREA')return;if(e.key==='ArrowRight')stepTo(idx+1);if(e.key==='ArrowLeft')stepTo(idx-1);if(e.key==='Escape')$('overlay').innerHTML='';});
+$('menuBtn').onclick=()=>{$('overlay').innerHTML=`<div class="ov" onclick="if(event.target===this)this.remove()"><div class="panel" role="dialog" aria-label="Contents"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Jump to a screen</h3><button class="btn ghost" onclick="$('overlay').innerHTML=''">Close</button></div><div class="menu">${slides.map((s,i)=>`<button onclick="$('overlay').innerHTML='';stepTo(${i})"><span class="muted">${i+1}</span> &nbsp;${s.label}</button>`).join('')}</div></div></div>`;};
+baseline();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>From Signal to Business</title>
+<style>
+:root{
+  --ink:#16213a;--ink2:#3f4a62;--muted:#69738a;--line:#d9dee8;--bg:#eef1f5;--paper:#fff;
+  --brand:#0f5e73;--brandSoft:#e3f0f3;--good:#0f7a5c;--goodSoft:#e2f4ec;
+  --warn:#b97409;--warnSoft:#fdf2dc;--bad:#b5452f;--badSoft:#fbe9e5;--violet:#5a46c8;--violetSoft:#eeebff;
+  --r-lg:20px;--r-md:14px;--r-sm:10px
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:17px;line-height:1.5}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+#app{height:100dvh;display:grid;grid-template-rows:auto 4px 1fr auto}
+
+/* header */
+header{background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,40px)}
+.brand-t{font-weight:700;font-size:1.02rem}
+.brand-s{font-size:.8rem;color:#a9b3c6}
+.hbtns{display:flex;gap:8px;align-items:center}
+.hbtn{background:#24304d;border:1px solid #34425f;color:#fff;border-radius:var(--r-sm);padding:8px 12px;font-size:.88rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.hbtn:hover{background:#2c3a5a}
+.badge{background:var(--warn);color:#fff;border-radius:99px;min-width:22px;height:22px;display:grid;place-items:center;font-size:.75rem;font-weight:700;padding:0 6px}
+.badge.pop{animation:pop .45s ease}
+@keyframes pop{40%{transform:scale(1.35)}}
+.count{font-size:.85rem;color:#a9b3c6;font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+#bar{background:#d5dbe5}#bar i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
+
+/* stage */
+main{overflow:auto}
+.stage{max-width:1180px;margin:0 auto;padding:clamp(18px,3vh,30px) clamp(16px,3vw,40px) 30px}
+.chapters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chapters span{font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:99px;background:#dfe4ec;color:var(--muted)}
+.chapters span.on{background:var(--ink);color:#fff}
+.chapters span.done{background:var(--brandSoft);color:var(--brand)}
+h1{font-size:clamp(2.1rem,4.6vw,3.6rem);line-height:1.05;margin:0 0 12px;letter-spacing:-.02em;max-width:18ch}
+h2{font-size:clamp(1.6rem,3.2vw,2.5rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.015em;max-width:26ch}
+h3{font-size:1.12rem;margin:0 0 6px;line-height:1.25}
+p{margin:0 0 10px}
+.lead{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ink2);max-width:62ch;margin-bottom:18px}
+.muted{color:var(--muted)}.small{font-size:.88rem}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;min-width:0}
+.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dark .muted{color:#b4bdcf}
+.fb{border-radius:var(--r-md);padding:13px 15px;margin-top:12px;background:var(--brandSoft);font-size:.95rem}
+.fb.good{background:var(--goodSoft)}.fb.bad{background:var(--badSoft)}.fb.warn{background:var(--warnSoft)}
+.fadein{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.src{font-size:.8rem;color:var(--muted);margin-top:10px}
+.src a{color:var(--brand);font-weight:600}
+.next-hint{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink2);font-weight:600;font-size:.95rem}
+
+/* buttons */
+.btn{border:0;border-radius:var(--r-sm);padding:11px 16px;font-weight:650;background:var(--brand);color:#fff}
+.btn:hover{background:#0b4b5c}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:10px 13px;margin-top:8px;font-weight:600;font-size:.95rem;transition:border-color .15s,background .15s}
+.opt:hover{border-color:#9db9c2}
+.opt.sel{border-color:var(--brand);background:var(--brandSoft)}
+.opt.ok{border-color:var(--good);background:var(--goodSoft)}
+.opt.no{border-color:var(--bad);background:var(--badSoft)}
+.pair{display:flex;gap:8px;margin-top:10px}.pair .opt{margin-top:0;text-align:center}
+
+/* hook */
+.hook{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+.idea{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:24px}
+.idea .lbl{font-size:.85rem;color:#bfe3eb;font-weight:600}
+.idea h3{font-size:1.45rem;color:#fff;margin:6px 0 8px}
+.idea p{color:#d4dae6}
+.vote{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.vote button{flex:1;min-width:110px;border:1px solid #3a4867;background:#24304d;color:#fff;border-radius:var(--r-sm);padding:11px;font-weight:650}
+.vote button:hover{background:#2f3d5f}
+.vote button.sel{background:#fff;color:var(--ink);border-color:#fff}
+.who{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.whoBtn{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:var(--r-md);padding:13px}
+.whoBtn b{display:block}
+.whoBtn span{font-size:.88rem;color:var(--muted)}
+.whoBtn.open{border-color:var(--good);background:var(--goodSoft)}
+.whoBtn.open span{color:var(--ink)}
+.outs{margin-top:16px;display:grid;gap:6px}
+.outs div{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:.93rem;color:var(--ink2)}
+.outs b{color:var(--brand)}
+
+/* sort */
+.stmt{font-weight:600;min-height:3.2em}
+.example{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:16px}
+.example .nm{font-size:1.5rem;font-weight:700}
+
+/* evidence */
+.big{font-size:clamp(2.4rem,5vw,3.6rem);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.ev{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.evBtn{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:var(--r-md);padding:14px}
+.evBtn b{display:block;font-size:1.05rem}
+.evBtn.sel{border-color:var(--brand);background:var(--brandSoft)}
+.meter{height:8px;background:var(--bg);border-radius:99px;margin-top:10px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--brand);border-radius:99px}
+
+/* vp */
+.field label{display:block;font-weight:600;font-size:.88rem;color:var(--ink2);margin:8px 0 4px}
+.field input{width:100%;padding:10px 12px;border:1px solid #c5cdd9;border-radius:var(--r-sm);background:#fff}
+.vpOut{font-size:1.2rem;font-weight:600;line-height:1.4;padding:18px;border-radius:var(--r-md);background:var(--ink);color:#fff;margin-top:12px}
+
+/* funnel */
+.funnel{display:grid;gap:6px}
+.fRow{display:grid;grid-template-columns:150px 1fr 70px;gap:10px;align-items:center;font-size:.9rem}
+.fTrack{height:26px;background:var(--bg);border-radius:8px;overflow:hidden}
+.fTrack i{display:block;height:100%;background:var(--brand);border-radius:8px;transition:width .25s}
+.fRow.leak .fTrack i{background:var(--bad)}
+.fRow b{text-align:right;font-variant-numeric:tabular-nums}
+.slider label{display:flex;justify-content:space-between;font-size:.86rem;font-weight:600;color:var(--ink2);margin-top:10px}
+input[type=range]{width:100%;accent-color:var(--brand)}
+
+/* growth */
+.model .res{font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.sbar{height:10px;background:var(--bg);border-radius:99px;overflow:hidden;margin:8px 0}
+.sbar i{display:block;height:100%;border-radius:99px;transition:width .3s}
+
+/* trial */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:18px;text-align:center}
+.tile .n{font-size:2.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* file */
+.vfile{display:grid;gap:8px}
+.vline{display:grid;grid-template-columns:190px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+.vline b{color:var(--ink2);font-size:.9rem}
+.vline .empty{color:var(--muted);font-style:italic}
+.compare2{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:14px 0}
+.compare2 .card{text-align:center}
+.compare2 .arr{font-size:1.6rem;color:var(--muted)}
+textarea{width:100%;padding:10px 12px;border:1px solid #c5cdd9;border-radius:var(--r-sm);min-height:70px;resize:vertical}
+.refs{margin:0;padding-left:20px;display:grid;gap:8px;font-size:.92rem}
+.refs a{color:var(--brand)}
+
+/* footer */
+footer{background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(16px,3vw,40px)}
+.flabel{font-size:.9rem;color:var(--muted);font-weight:600}
+.fnav{display:flex;gap:8px}
+.fnav button{border:1px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:10px 18px;font-weight:650}
+.fnav .nx{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fnav button:disabled{opacity:.35;cursor:not-allowed}
+
+/* overlays */
+.ov{position:fixed;inset:0;background:rgba(10,18,34,.55);display:flex;justify-content:flex-end;z-index:50}
+.panel{background:#fff;width:min(480px,100%);height:100%;overflow:auto;padding:22px}
+.panel.center{margin:auto;height:auto;max-height:88dvh;border-radius:var(--r-lg);width:min(720px,94vw)}
+.ov.mid{justify-content:center;align-items:center}
+.phead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.menu button{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:var(--r-sm);padding:10px 12px;font-weight:600;font-size:.9rem}
+.menu button:hover{background:var(--brandSoft)}
+
+@media(max-width:900px){
+  .hook,.g2,.g3,.g4,.ev,.tiles,.compare2,.menu{grid-template-columns:1fr}
+  .compare2 .arr{transform:rotate(90deg);text-align:center}
+  .vline{grid-template-columns:1fr;gap:2px}
+  .fRow{grid-template-columns:110px 1fr 56px}
+  .brand-s,.flabel,.hbtn .t{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{header,footer,#bar,.chapters,.noprint{display:none!important}#app{display:block;height:auto}main{overflow:visible}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div><div class="brand-t">From Signal to Business</div><div class="brand-s">Designed and developed by Dr Sanjay Chib</div></div>
+  <div class="hbtns">
+    <button class="hbtn" id="fileBtn" title="Your venture file"><span class="t">Venture file</span><span class="badge" id="fileCount">0</span></button>
+    <button class="hbtn" id="menuBtn"><span class="t">Contents</span><span aria-hidden="true">☰</span></button>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<div id="bar"><i></i></div>
+<main id="view"><div class="stage" id="stage"></div></main>
+<footer>
+  <span class="flabel" id="flabel"></span>
+  <div class="fnav"><button id="back">Back</button><button class="nx" id="next">Next</button></div>
+</footer>
+</div>
+<div id="overlay"></div>
+
+<script>
+'use strict';
+const S={vote:null,who:{},mind:{},sort:{},worth:null,ev:null,airbnb:false,cmp:{},vp:{customer:'families who ski or hike a few times a season',problem:'find new gear too expensive to buy every year',outcome:'get good-quality equipment at a fair price',diff:'buying checked, refurbished rental gear from their local sports shop'},vpOut:'',fit:{},model:null,rates:[40,25,70,75],leak:null,scale:400,quibi:null,trial:false,decision:null,nextTest:''};
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const chapters=['Idea','Mindset','Problem','Evidence','Value','Model','Customers','Growth','Decision','File'];
+let idx=0;
+
+/* ---------- venture file ---------- */
+function fileItems(){
+  return [
+    ['First instinct',S.vote?({yes:'Back it now',notyet:'Not yet',no:'No'})[S.vote]:''],
+    ['Value proposition',S.vpOut],
+    ['How it earns',S.model?({fee:'Commission on each sale',sub:'Monthly fee paid by shops',mem:'Membership for buyers'})[S.model]:''],
+    ['Biggest customer drop-off',S.leak||''],
+    ['Decision after the trial',S.decision?({grow:'Grow to 80 shops now',retest:'Improve and test again',stop:'End the project'})[S.decision]:''],
+  ];
+}
+function bumpFile(){
+  const n=fileItems().filter(x=>x[1]).length;
+  const b=document.getElementById('fileCount');
+  if(String(n)!==b.textContent){b.textContent=n;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}
+}
+function fileHTML(){
+  return '<div class="vfile">'+fileItems().map(([k,v])=>`<div class="vline"><b>${k}</b><span class="${v?'':'empty'}">${v?esc(v):'Not decided yet'}</span></div>`).join('')+'</div>';
+}
+
+/* ---------- helpers ---------- */
+function setS(k,v){S[k]=v;render();}
+function chap(c){return '<div class="chapters" aria-hidden="true">'+chapters.map((n,i)=>`<span class="${i===c?'on':i<c?'done':''}">${n}</span>`).join('')+'</div>';}
+const money=n=>(n<0?'−':'')+'$'+Math.abs(Math.round(n)).toLocaleString('en-US');
+
+/* ---------- slides ---------- */
+const slides=[
+{label:'The idea',c:0,html:()=>{
+  const who={customers:['Buyers','Good gear for much less than new.'],shops:['Sports shops','Turn worn rental stock into cash at season end.'],community:['The region','Less equipment thrown away, and sport becomes more affordable.'],founder:['The founder','A business, if the service earns more than it costs.']};
+  const voteFb={yes:'You would back it already. Hold that thought: by the end you will test whether the evidence agrees.',notyet:'A careful instinct. By the end you will know exactly what evidence would change your mind.',no:'A sceptical start. By the end you will see whether the evidence supports you or surprises you.'};
+  return chap(0)+`<div class="hook">
+  <div>
+    <h1>Would you back this idea?</h1>
+    <p class="lead">Every venture starts as a guess. This lesson turns one guess into a decision you can defend, one step at a time.</p>
+    <div class="idea">
+      <div class="lbl">The idea</div>
+      <h3>Refurbished gear from local sports shops</h3>
+      <p>Every spring, sports shops retire hundreds of rental skis, bikes and boots. A service would let local people buy that checked, refurbished gear at a fair price and collect it in store.</p>
+      <div class="vote" role="group" aria-label="Your first instinct">
+        ${[['yes','Back it now'],['notyet','Not yet'],['no','No']].map(([k,t])=>`<button class="${S.vote===k?'sel':''}" onclick="setS('vote','${k}')">${t}</button>`).join('')}
+      </div>
+      ${S.vote?`<p class="fadein" style="margin:12px 0 0;color:#fff"><b>Saved to your venture file.</b> ${voteFb[S.vote]}</p>`:'<p class="small" style="margin:12px 0 0;color:#a9b3c6">Pick your first instinct. It goes into your venture file.</p>'}
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h3>Who could benefit? Tap each one.</h3>
+      <div class="who">${Object.entries(who).map(([k,[t,d]])=>`<button class="whoBtn ${S.who[k]?'open':''}" onclick="S.who['${k}']=!S.who['${k}'];render()"><b>${t}</b><span>${S.who[k]?d:'Show the benefit'}</span></button>`).join('')}</div>
+      <p class="small muted" style="margin:10px 0 0">One business can create different value for different people. Only some of them pay.</p>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h3>By the end you can</h3>
+      <div class="outs">
+        <div><b>Spot</b><span>a real problem behind a broad trend</span></div>
+        <div><b>Test</b><span>an idea with evidence, not enthusiasm</span></div>
+        <div><b>Decide</b><span>whether to grow, change or stop a venture</span></div>
+      </div>
+    </div>
+  </div></div>`;}},
+
+{label:'Thinking under uncertainty',c:1,html:()=>{
+  const m=[
+    ['Five shop owners love the idea, but none has signed up yet.',['Count it as demand','Ask one shop to try a two-week trial'],1,'Enthusiasm is not commitment. A small real test teaches more than praise.'],
+    ['You cannot afford to build an app yet.',['Wait until you can fund the app','Run it with a booking form and a spreadsheet'],1,'Start with what you have. Learn before you invest heavily.'],
+    ['Several buyers ask to rent the gear, not buy it.',['Ignore it: renting is not the plan','Explore whether renting is the better opportunity'],1,'Unexpected behaviour can point to a stronger idea than the original one.'],
+    ['A friend works at the regional tourism office.',['Keep the idea quiet','Ask for introductions to shops and buyers'],1,'Entrepreneurs grow what they can do through people and partnerships.']
+  ];
+  return chap(1)+`<h2>What would you do next?</h2><p class="lead">Entrepreneurs rarely have full information. Choose the response that teaches you more with less risk.</p>
+  <div class="g2">${m.map((x,i)=>{const p=S.mind[i];return `<div class="card"><p style="font-weight:600">${x[0]}</p>${x[1].map((o,j)=>`<button class="opt ${p===undefined?'':j===p?(j===x[2]?'ok':'no'):''}" onclick="S.mind[${i}]=${j};render()">${o}</button>`).join('')}${p!==undefined?`<div class="fb ${p===x[2]?'good':'bad'} fadein"><b>${p===x[2]?'Useful move.':'Look again.'}</b> ${x[3]}</div>`:''}</div>`}).join('')}</div>
+  <p class="src">Based on effectuation research: start with available means and limit downside risk (Sarasvathy, 2001).</p>`;}},
+
+{label:'Trend or real problem?',c:2,html:()=>{
+  const t=[
+    ['More people care about sustainability.','T','Useful direction, but it names no one who is struggling.'],
+    ['Sports shops hold hundreds of worn rental skis each spring that they cannot sell quickly.','P','A specific group, a repeated situation and a real cost.'],
+    ['Online second-hand markets are growing.','T','A market shift. It tells you where to look, not what to fix.'],
+    ['Families stop skiing because buying gear for growing children every season costs too much.','P','A customer, a situation and a reason they give up.']
+  ];
+  return chap(2)+`<h2>Trend, or a problem someone has?</h2><p class="lead">A trend tells you where to look. A problem tells you what someone is struggling with. Sort each statement.</p>
+  <div class="g2">${t.map((x,i)=>{const p=S.sort[i];return `<div class="card"><p class="stmt">“${x[0]}”</p><div class="pair">${['T','P'].map(k=>`<button class="opt ${p===k?(k===x[1]?'ok':'no'):''}" onclick="S.sort[${i}]='${k}';render()">${k==='T'?'Trend':'Problem'}</button>`).join('')}</div>${p?`<div class="fb ${p===x[1]?'good':'bad'} fadein"><b>${p===x[1]?'Right.':'Not quite.'}</b> ${x[2]}</div>`:''}</div>`}).join('')}</div>
+  <div class="card example"><div class="nm">Wise</div><div><b>A lived problem.</b> Two founders moving money between pounds and euros found bank transfers slow, costly and confusing. They built a workaround between themselves, then asked: “There must be others like us.” <div class="src">Source: <a href="https://wise.com/us/about/our-story" target="_blank" rel="noopener">Wise, Our story</a></div></div></div>`;}},
+
+{label:'Is it worth solving?',c:2,html:()=>{
+  const q=[['Who needs it fixed?','Shops with unsold stock, and buyers priced out of new gear.'],['How serious is it?','Shops tie up cash and storage; families give up sport.'],['What do people do today?','Shops sell at end-of-season sales or scrap; buyers use online marketplaces.'],['Who pays?','Possibly the buyer, the shop, or both. Still unclear.']];
+  return chap(2)+`<h2>Is this problem worth solving?</h2><p class="lead">A real problem is not automatically a business. Check four things before building anything.</p>
+  <div class="g4">${q.map(x=>`<div class="card"><h3>${x[0]}</h3><p class="small muted" style="margin:0">${x[1]}</p></div>`).join('')}</div>
+  <div class="card" style="margin-top:14px"><h3>One shop owner says: “I’d use this tomorrow.” What now?</h3>
+  <div class="pair"><button class="opt ${S.worth==='build'?'no':''}" onclick="setS('worth','build')">Start building the service</button><button class="opt ${S.worth==='check'?'ok':''}" onclick="setS('worth','check')">Talk to more shops and buyers first</button></div>
+  ${S.worth?`<div class="fb ${S.worth==='check'?'good':'bad'} fadein">${S.worth==='check'?'<b>Right.</b> Find out how many shops face it, how often, and what they do now.':'<b>Too early.</b> One enthusiastic person does not tell you how many others need it.'}</div>`:''}</div>
+  <p class="next-hint">Next: what kind of evidence would actually convince you?</p>`;}},
+
+{label:'What counts as evidence?',c:3,html:()=>{
+  const e=[['likes','800 likes','on a post about the idea',20],['talks','25 interviews','people describe the problem',55],['paid','12 payments','people paid a deposit to try it',90]];
+  const fb={likes:'<b>Weak.</b> Likes are easy to give and easy to forget.',talks:'<b>Useful, not proof.</b> You learn about the problem, but nobody has acted yet.',paid:'<b>Strongest here.</b> People acted and spent money. Still not proof of a large market: watch who comes back.'};
+  return chap(3)+`<h2>Which result would convince you?</h2><p class="lead">Pick the strongest sign that people really want the service.</p>
+  <div class="ev">${e.map(x=>`<button class="evBtn ${S.ev===x[0]?'sel':''}" onclick="setS('ev','${x[0]}')"><b>${x[1]}</b><span class="small muted">${x[2]}</span>${S.ev?`<div class="meter"><i style="width:${x[3]}%"></i></div><span class="small muted">strength of signal</span>`:''}</button>`).join('')}</div>
+  ${S.ev?`<div class="fb fadein">${fb[S.ev]}</div>`:''}
+  <div class="g3" style="margin-top:16px">
+    <div class="card"><div class="small muted">Airbnb · March 2008</div><div class="big">2</div><p class="small" style="margin:6px 0 0">bookings during an early launch</p></div>
+    <div class="card">${S.airbnb?`<div class="small muted">August 2008 · a later event</div><div class="big fadein">80</div><p class="small" style="margin:6px 0 0">bookings when they tried again</p>`:`<div class="small muted">August 2008</div><div class="big">?</div><button class="btn" style="margin-top:8px" onclick="setS('airbnb',true)">Reveal what happened</button>`}</div>
+    <div class="card dark"><div class="small muted">By 2026</div><div class="big">2.5B+</div><p class="small muted" style="margin:6px 0 0">cumulative guest arrivals</p></div>
+  </div>
+  ${S.airbnb?`<div class="fb fadein"><b>What did it prove?</b> Some guests booked during big events. It did not yet prove steady demand all year. Early evidence is a reason to keep testing, not to stop.</div>`:''}
+  <p class="src">Source: <a href="https://news.airbnb.com/about-us" target="_blank" rel="noopener">Airbnb, About us</a>. The two events had different conditions, so the numbers are not a growth rate.</p>`;}},
+
+{label:'Why should anyone care?',c:4,html:()=>{
+  const c=[
+    ['Which is a value proposition?','Sustainable sports ecosystem for the modern outdoor community.','Get checked ski gear for half the price of new, ready to collect from your local shop.','b','The second names an outcome a customer can picture. The first is a slogan.'],
+    ['Which gives you more to test?','The easiest way to buy used gear.','Help parents re-equip growing children each season without paying full price.','b','A specific customer and situation tell you who to talk to and what to measure.']
+  ];
+  const v=S.vp;
+  return chap(4)+`<h2>Why would anyone choose this?</h2><p class="lead">A value proposition connects a specific customer, their problem, the outcome they want and why your way is better than what they do today.</p>
+  <div class="g2">${c.map((x,i)=>{const p=S.cmp[i];return `<div class="card"><h3>${x[0]}</h3>${['a','b'].map((k,j)=>`<button class="opt ${p===k?(k===x[3]?'ok':'no'):''}" onclick="S.cmp[${i}]='${k}';render()">${x[1+j]}</button>`).join('')}${p?`<div class="fb ${p===x[3]?'good':'bad'} fadein"><b>${p===x[3]?'Stronger.':'Look again.'}</b> ${x[4]}</div>`:''}</div>`}).join('')}</div>
+  <div class="card" style="margin-top:14px"><h3>Build the value proposition</h3><p class="small muted">The fields hold an example for the gear idea. Edit them, or replace them with your own idea.</p>
+  <div class="g2 field">
+    <div><label for="vc">Specific customer</label><input id="vc" value="${esc(v.customer)}" oninput="S.vp.customer=this.value"></div>
+    <div><label for="vpb">Their problem</label><input id="vpb" value="${esc(v.problem)}" oninput="S.vp.problem=this.value"></div>
+    <div><label for="vo">Outcome they want</label><input id="vo" value="${esc(v.outcome)}" oninput="S.vp.outcome=this.value"></div>
+    <div><label for="vd">Why your way is different</label><input id="vd" value="${esc(v.diff)}" oninput="S.vp.diff=this.value"></div>
+  </div>
+  <div style="margin-top:12px"><button class="btn" onclick="buildVP()">Build value proposition</button></div>
+  ${S.vpErr?'<div class="fb bad">Complete all four fields first.</div>':''}
+  ${S.vpOut?`<div class="vpOut fadein">${esc(S.vpOut)}</div><p class="small muted" style="margin:8px 0 0">Saved to your venture file. Ask: is it specific, and would the customer say it in their own words?</p>`:''}</div>`;}},
+
+{label:'How does it make money?',c:5,html:()=>{
+  const f=[
+    ['A language app wants millions of people to start with no barrier, then convert heavy users to paid features.',['Hard paywall','Freemium + subscription','Transaction fee'],1,'Let many people experience the value first, then convert some to paid.'],
+    ['A platform connects independent providers with customers and wants revenue to rise with each booking.',['Transaction fee','Advertising only','Annual licence'],0,'The platform earns when a booking happens, so its income grows with use.']
+  ];
+  const mods={fee:['Commission on each sale','Earns only when gear sells. Easy for shops to say yes; income depends on volume.'],sub:['Monthly fee paid by shops','Predictable income, but shops must believe it will pay off before they commit.'],mem:['Membership for buyers','Rewards loyal buyers, but asks for commitment before they have seen the gear.']};
+  return chap(5)+`<h2>How should it earn money?</h2><p class="lead">A business model is the whole logic of creating, delivering and capturing value. The revenue model is one part of it. Warm up with two cases, then choose for the gear idea.</p>
+  <div class="g2">${f.map((x,i)=>{const p=S.fit[i];return `<div class="card"><p style="font-weight:600">${x[0]}</p>${x[1].map((o,j)=>`<button class="opt ${p===undefined?'':j===p?(j===x[2]?'ok':'no'):''}" onclick="S.fit[${i}]=${j};render()">${o}</button>`).join('')}${p!==undefined?`<div class="fb ${p===x[2]?'good':'bad'} fadein"><b>${p===x[2]?'Good fit.':'Think again.'}</b> ${x[3]}</div>`:''}</div>`}).join('')}</div>
+  <div class="card" style="margin-top:14px"><h3>Your call: how should the gear service earn?</h3><p class="small muted">There is no single right answer. Each choice changes who carries the risk.</p>
+  <div class="g3">${Object.entries(mods).map(([k,[t]])=>`<button class="opt ${S.model===k?'sel':''}" onclick="setS('model','${k}')">${t}</button>`).join('')}</div>
+  ${S.model?`<div class="fb fadein"><b>${mods[S.model][0]}.</b> ${mods[S.model][1]} Saved to your venture file.</div>`:''}</div>
+  <div class="card example"><div class="nm">Duolingo</div><div>Most learning stays free; it earns through subscriptions, ads and in-app purchases. At Q4 2025 it reported <b>133.1M</b> monthly active users and <b>12.2M</b> paid subscribers. The free product is the engine that finds future payers.<div class="src">Source: <a href="https://investors.duolingo.com/company-strategy-overview-0" target="_blank" rel="noopener">Duolingo investor relations</a></div></div></div>`;}},
+
+{label:'Where do customers drop off?',c:6,html:()=>chap(6)+`<h2>Where are you losing customers?</h2><p class="lead">Out of 1,000 local people who hear about the service, how many end up with gear? Move the sliders and watch the leak move.</p>
+  <div class="g2"><div class="card" id="funnel"></div><div class="card" id="sliders"></div></div>
+  <div class="fb warn" id="leakMsg"></div>
+  <p class="small muted" style="margin-top:8px">Illustrative percentages, not industry benchmarks. Real customers can enter at any stage.</p>`,
+  after:drawFunnel},
+
+{label:'Can it grow?',c:7,html:()=>chap(7)+`<h2>More customers. More staff? More profit?</h2><p class="lead">Compare running the gear service by hand with running it as a platform that shops manage themselves.</p>
+  <div class="card"><div class="slider"><label for="cust"><span>Customers per month</span><span id="custOut"></span></label><input id="cust" type="range" min="100" max="1500" step="100" value="${S.scale}" oninput="S.scale=+this.value;drawGrowth()"></div></div>
+  <div class="g2" style="margin-top:12px">
+    <div class="card model"><h3>Run by hand</h3><p class="small muted">$90 per customer, $78 to serve each, $3,500 fixed per month</p><div class="small" id="sStaff"></div><div class="sbar"><i id="sBar" style="background:var(--warn)"></i></div><div class="res" id="sRes"></div><div class="small muted">monthly profit or loss</div></div>
+    <div class="card model"><h3>Run as a platform</h3><p class="small muted">$25 per customer, $4 to serve each, $7,000 fixed per month</p><div class="small" id="pStaff"></div><div class="sbar"><i id="pBar" style="background:var(--brand)"></i></div><div class="res" id="pRes"></div><div class="small muted">monthly profit or loss</div></div>
+  </div>
+  <div class="fb" id="growMsg"></div>
+  <p class="small muted" style="margin-top:8px">Illustration only. One staff member handles 40 customers a month; other costs are simplified.</p>`,
+  after:drawGrowth},
+
+{label:'Funding is not demand',c:7,html:()=>chap(7)+`<h2>Money can help an idea grow. It cannot create customers.</h2>
+  <div class="g2"><div class="card dark"><div class="small muted">Quibi · United States, 2020</div><div class="big">$1.75B</div><p style="margin-top:8px">raised for short videos made for phones. Launched in April 2020; closure announced six months later.</p><div class="src" style="color:#b4bdcf">Source: <a style="color:#bfe3eb" href="https://www.spglobal.com/market-intelligence/en/news-insights/research/quibis-2-billion-bet-on-mobile-video-fizzles-out" target="_blank" rel="noopener">S&amp;P Global Market Intelligence</a></div></div>
+  <div class="card"><h3>What does this tell you?</h3>
+  <button class="opt ${S.quibi==='proof'?'no':''}" onclick="setS('quibi','proof')">Big investors proved the market existed</button>
+  <button class="opt ${S.quibi==='not'?'ok':''}" onclick="setS('quibi','not')">Customers still had to choose it</button>
+  ${S.quibi?`<div class="fb ${S.quibi==='not'?'good':'bad'} fadein"><b>${S.quibi==='not'?'Exactly.':'Not enough.'}</b> Funding can pay for building, growth and early losses. It does not guarantee anyone comes back.</div>`:''}</div></div>
+  <p class="next-hint">So the gear idea starts small. Here is what a two-week trial showed.</p>`},
+
+{label:'The trial',c:8,html:()=>chap(8)+`<h2>People paid. Then a problem appeared.</h2><p class="lead">Two weeks, one valley. Local sports shops listed refurbished gear and buyers reserved it online for in-store pickup.</p>
+  ${S.trial?`<div class="tiles fadein"><div class="tile"><div class="n">7/18</div><div class="small muted">shops joined</div></div><div class="tile"><div class="n">31</div><div class="small muted">paid reservations</div></div><div class="tile"><div class="n" style="color:var(--bad)">9/31</div><div class="small muted">never collected</div></div></div>
+  <div class="fb warn fadein"><b>Good sign:</b> shops joined and buyers paid. <b>Concern:</b> almost one in three buyers never collected their gear. Why might that happen?</div>`:`<div class="card dark"><h3 style="color:#fff">What happened in the trial?</h3><p class="muted">The team tracked how many shops joined, how many people paid, and whether they collected their gear.</p><button class="btn" style="background:#fff;color:var(--ink)" onclick="setS('trial',true)">Reveal the results</button></div>`}
+  <p class="small muted" style="margin-top:10px">All trial numbers are invented for this lesson.</p>`},
+
+{label:'Your decision',c:8,html:()=>{
+  const d={grow:['Grow to 80 shops now','More shops may bring more sales, but the missed pickups could grow with them.','bad'],retest:['Improve and test again','Find out why buyers did not collect, test a fix, then check repeat purchases before growing.','good'],stop:['End the project','Possible if the economics can never work, but two weeks is too little evidence for that.','warn']};
+  return chap(8)+`<h2>Would you grow this business now?</h2><p class="lead">7 shops joined and 31 people paid. But 9 never collected their gear.</p>
+  <div class="g3">${Object.entries(d).map(([k,[t]])=>`<button class="opt ${S.decision===k?'sel':''}" style="padding:16px" onclick="setS('decision','${k}')">${t}</button>`).join('')}</div>
+  ${S.decision?`<div class="fb ${d[S.decision][2]} fadein"><b>${d[S.decision][0]}.</b> ${d[S.decision][1]} Saved to your venture file.</div>`:''}
+  <p class="next-hint">The decision is not about the boldest idea. It is about value, evidence, cost and what you learned.</p>`;}},
+
+{label:'Your venture file',c:9,html:()=>{
+  const first=S.vote?({yes:'Back it now',notyet:'Not yet',no:'No'})[S.vote]:'Not chosen';
+  const now=S.decision?({grow:'Grow now',retest:'Improve and test again',stop:'End it'})[S.decision]:'Not chosen';
+  return chap(9)+`<h2>Your venture file</h2><p class="lead">Everything you decided, in one place. Compare your first instinct with the decision you reached with evidence.</p>
+  <div class="compare2"><div class="card"><div class="small muted">First instinct</div><div style="font-size:1.4rem;font-weight:700">${esc(first)}</div></div><div class="arr">→</div><div class="card dark"><div class="small muted">With evidence</div><div style="font-size:1.4rem;font-weight:700">${esc(now)}</div></div></div>
+  <div class="card">${fileHTML()}
+  <label for="nt" style="display:block;font-weight:600;margin:14px 0 6px">The assumption to test next</label>
+  <textarea id="nt" placeholder="For example: buyers will collect within 48 hours if we send a reminder" oninput="S.nextTest=this.value">${esc(S.nextTest)}</textarea>
+  <div class="noprint" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="window.print()">Print or save as PDF</button><button class="btn ghost" onclick="stepTo(0)">Start again from the idea</button></div></div>`;}},
+
+{label:'Sources',c:9,html:()=>chap(9)+`<h2>Sources</h2><div class="card"><ol class="refs">
+  <li>Airbnb. (2026). <i>About us.</i> <a href="https://news.airbnb.com/about-us" target="_blank" rel="noopener">news.airbnb.com/about-us</a></li>
+  <li>Duolingo. (2026). <i>Company strategy overview.</i> <a href="https://investors.duolingo.com/company-strategy-overview-0" target="_blank" rel="noopener">investors.duolingo.com</a></li>
+  <li>Sarasvathy, S. D. (2001). Causation and effectuation: Toward a theoretical shift from economic inevitability to entrepreneurial contingency. <i>Academy of Management Review, 26</i>(2), 243–263. <a href="https://doi.org/10.5465/AMR.2001.4378020" target="_blank" rel="noopener">doi.org/10.5465/AMR.2001.4378020</a></li>
+  <li>Shafer, S. (2021, January 6). <i>Quibi’s $2 billion bet on mobile video fizzles out.</i> S&amp;P Global Market Intelligence. <a href="https://www.spglobal.com/market-intelligence/en/news-insights/research/quibis-2-billion-bet-on-mobile-video-fizzles-out" target="_blank" rel="noopener">spglobal.com</a></li>
+  <li>Wise. (n.d.). <i>Our story.</i> <a href="https://wise.com/us/about/our-story" target="_blank" rel="noopener">wise.com</a></li>
+  </ol><p class="small muted" style="margin-top:12px">The gear venture, trial results and simulator figures are fictional and for learning only.</p></div>`}
+];
+
+/* ---------- interactive drawers ---------- */
+function buildVP(){
+  const v=S.vp;
+  if(![v.customer,v.problem,v.outcome,v.diff].every(x=>x.trim())){S.vpOut='';S.vpErr=true;render();return;}
+  S.vpErr=false;
+  S.vpOut=`For ${v.customer.trim()} who ${v.problem.trim()}, we help them ${v.outcome.trim()} by ${v.diff.trim()}.`;
+  render();
+}
+
+const fNames=['Hear about it','Visit the listing','Reserve gear','Pay','Collect in store'];
+function drawFunnel(){
+  const r=S.rates;let c=[1000];r.forEach(x=>c.push(Math.round(c[c.length-1]*x/100)));
+  const min=Math.min(...r),li=r.indexOf(min);
+  document.getElementById('funnel').innerHTML='<h3>1,000 people</h3><div class="funnel">'+c.map((n,i)=>`<div class="fRow ${i===li+1?'leak':''}"><span>${fNames[i]}</span><div class="fTrack"><i style="width:${Math.max(1,n/10)}%"></i></div><b>${n.toLocaleString('en-US')}</b></div>`).join('')+'</div>';
+  const sl=document.getElementById('sliders');
+  if(!sl.dataset.built){
+    sl.innerHTML='<h3>Change the assumptions</h3>'+r.map((x,i)=>`<div class="slider"><label for="r${i}"><span>${fNames[i]} → ${fNames[i+1]}</span><span id="rv${i}">${x}%</span></label><input id="r${i}" type="range" min="1" max="100" value="${x}"></div>`).join('');
+    r.forEach((_,i)=>document.getElementById('r'+i).addEventListener('input',e=>{S.rates[i]=+e.target.value;document.getElementById('rv'+i).textContent=e.target.value+'%';drawFunnel();}));
+    sl.dataset.built='1';
+  }
+  S.leak=`${fNames[li]} → ${fNames[li+1]} (${min}% continue)`;
+  document.getElementById('leakMsg').innerHTML=`<b>Biggest leak:</b> ${fNames[li]} → ${fNames[li+1]}, where only ${min}% continue. What would you test to fix this step? <span class="small">Saved to your venture file.</span>`;
+  bumpFile();
+}
+function drawGrowth(){
+  const n=S.scale,sp=n*(90-78)-3500,pp=n*(25-4)-7000,st=Math.ceil(n/40),pt=n<=1000?2:3;
+  document.getElementById('custOut').textContent=n.toLocaleString('en-US');
+  document.getElementById('sStaff').textContent=st+' staff needed';
+  document.getElementById('pStaff').textContent=pt+' team members';
+  document.getElementById('sBar').style.width=Math.min(100,st/38*100)+'%';
+  document.getElementById('pBar').style.width=Math.min(100,pt/38*100)+'%';
+  const sr=document.getElementById('sRes'),pr=document.getElementById('pRes');
+  sr.textContent=money(sp);sr.className='res '+(sp<0?'neg':'pos');
+  pr.textContent=money(pp);pr.className='res '+(pp<0?'neg':'pos');
+  document.getElementById('growMsg').innerHTML=pp>sp?'<b>The platform pulls ahead.</b> Each extra customer adds little cost, so profit grows faster than staff.':'<b>Running it by hand is ahead for now.</b> The platform needs enough customers to cover its higher fixed costs.';
+}
+
+/* ---------- navigation ---------- */
+function render(){
+  const s=slides[idx];
+  document.getElementById('stage').innerHTML=s.html();
+  if(s.after)s.after();
+  document.getElementById('count').textContent=(idx+1)+' / '+slides.length;
+  document.querySelector('#bar i').style.width=((idx+1)/slides.length*100)+'%';
+  document.getElementById('flabel').textContent=s.label;
+  document.getElementById('back').disabled=idx===0;
+  document.getElementById('next').disabled=idx===slides.length-1;
+  bumpFile();
+}
+function stepTo(n){if(n<0||n>=slides.length)return;idx=n;render();document.getElementById('view').scrollTop=0;}
+document.getElementById('back').onclick=()=>stepTo(idx-1);
+document.getElementById('next').onclick=()=>stepTo(idx+1);
+document.addEventListener('keydown',e=>{
+  const t=e.target.tagName;if(t==='INPUT'||t==='TEXTAREA')return;
+  if(e.key==='ArrowRight')stepTo(idx+1);
+  if(e.key==='ArrowLeft')stepTo(idx-1);
+  if(e.key==='Escape')closeOv();
+});
+function closeOv(){document.getElementById('overlay').innerHTML='';}
+document.getElementById('fileBtn').onclick=()=>{
+  document.getElementById('overlay').innerHTML=`<div class="ov" onclick="if(event.target===this)closeOv()"><div class="panel" role="dialog" aria-label="Your venture file"><div class="phead"><h3 style="margin:0">Your venture file</h3><button class="btn ghost" onclick="closeOv()">Close</button></div><p class="small muted">Your choices collect here as you go. The last screen puts them together.</p>${fileHTML()}<button class="btn" style="margin-top:14px" onclick="closeOv();stepTo(${slides.length-2})">Open the full venture file</button></div></div>`;
+};
+document.getElementById('menuBtn').onclick=()=>{
+  document.getElementById('overlay').innerHTML=`<div class="ov mid" onclick="if(event.target===this)closeOv()"><div class="panel center" role="dialog" aria-label="Contents"><div class="phead"><h3 style="margin:0">Jump to a screen</h3><button class="btn ghost" onclick="closeOv()">Close</button></div><div class="menu">${slides.map((s,i)=>`<button onclick="closeOv();stepTo(${i})"><span class="muted">${i+1}</span> &nbsp;${s.label}</button>`).join('')}</div></div></div>`;
+};
+render();
+</script>
+</body>
+</html>

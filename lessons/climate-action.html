@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Climate Action: What Is Changing?</title>
+<style>
+:root{
+  --ink:#1f2433;--ink2:#454b60;--muted:#6b7186;--line:#e1e5ea;--bg:#f4f7f6;--paper:#fff;
+  --pri:#1f8a70;--priDk:#176b57;
+  --lav:#ece9ff;--mint:#dcf3ea;--peach:#ffe7dc;--sky:#e1efff;--butter:#fff3cc;
+  --pos:#1f8a5b;--neg:#c2483a;--warnInk:#8a6200;--r-lg:20px;--r-md:14px;--r-sm:10px
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:17px;line-height:1.5}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+#app{height:100dvh;display:grid;grid-template-rows:auto 5px 1fr auto}
+header{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,40px)}
+.brand-t{font-weight:700;font-size:1.05rem}
+.brand-s{font-size:.8rem;color:var(--muted)}
+.hbtns{display:flex;gap:8px;align-items:center}
+.hbtn{background:var(--mint);border:0;color:var(--priDk);border-radius:var(--r-sm);padding:8px 12px;font-size:.88rem;font-weight:650;text-decoration:none}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+#bar{background:var(--line)}#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8fd3b6,#a9cdf5,#ffd98a);transition:width .3s}
+main{overflow:auto}
+.stage{max-width:1160px;margin:0 auto;padding:clamp(16px,3vh,28px) clamp(16px,3vw,40px) 30px}
+.path{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.path span{font-size:.78rem;font-weight:650;padding:4px 10px;border-radius:99px;background:#e8ecea;color:var(--muted)}
+.path span.on{background:var(--pri);color:#fff}
+.path span.done{background:var(--mint);color:var(--priDk)}
+h1{font-size:clamp(2.2rem,4.8vw,3.7rem);line-height:1.04;margin:0 0 12px;letter-spacing:-.02em;max-width:16ch}
+h2{font-size:clamp(1.6rem,3.1vw,2.4rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.015em;max-width:28ch}
+h3{font-size:1.08rem;margin:0 0 6px;line-height:1.25}
+p{margin:0 0 10px}
+.lead{font-size:clamp(1.03rem,1.6vw,1.2rem);color:var(--ink2);max-width:64ch;margin-bottom:18px}
+.muted{color:var(--muted)}.small{font-size:.86rem}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;min-width:0}
+.lav{background:var(--lav);border-color:transparent}.mint{background:var(--mint);border-color:transparent}.peach{background:var(--peach);border-color:transparent}.sky{background:var(--sky);border-color:transparent}.butter{background:var(--butter);border-color:transparent}
+.big{font-size:clamp(2.2rem,4.6vw,3.3rem);font-weight:750;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.cite{font-size:.75rem;color:var(--muted);font-weight:600}
+.take{margin-top:16px;padding:14px 16px;border-radius:var(--r-md);background:#fff;border-left:5px solid var(--pri);box-shadow:0 1px 0 var(--line)}
+.take b{color:var(--pri)}
+.fb{border-radius:var(--r-md);padding:12px 14px;margin-top:10px;background:var(--sky);font-size:.93rem}
+.fb.good{background:var(--mint)}.fb.bad{background:var(--peach)}.fb.warn{background:var(--butter)}
+.fadein{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.btn{border:0;border-radius:var(--r-sm);padding:11px 16px;font-weight:650;background:var(--pri);color:#fff;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--priDk)}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:8px 12px;font-weight:600;font-size:.9rem}
+.opt.sel{border-color:var(--pri);background:var(--mint)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tapcard{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:var(--r-md);padding:14px;width:100%}
+.tapcard:hover{border-color:#a7d8c6}
+.tapcard.open{border-color:var(--pri)}
+.tapcard .more{margin-top:8px;font-size:.9rem;color:var(--ink2)}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:8px}
+.t-good{background:var(--mint);color:var(--pos)}.t-slow{background:var(--butter);color:var(--warnInk)}.t-bad{background:var(--peach);color:var(--neg)}
+.vote{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.vote button{border:1.5px solid var(--line);background:#fff;border-radius:var(--r-md);padding:14px;font-weight:700}
+.vote button.sel{border-color:var(--pri);background:var(--mint)}
+.ring{width:220px;height:220px;border-radius:50%;margin:auto;display:grid;place-items:center;position:relative}
+.ring::after{content:"";position:absolute;inset:34px;border-radius:50%;background:#fff}
+.ring div{position:relative;z-index:1;text-align:center}
+.ring b{display:block;font-size:3rem;line-height:1}
+.slider label{display:flex;justify-content:space-between;font-size:.9rem;font-weight:650;color:var(--ink2);margin-top:10px}
+input[type=range]{width:100%;accent-color:var(--pri)}
+.barRow{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;font-size:.9rem;margin-top:8px}
+.track{height:14px;background:#e8ecea;border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;background:var(--pri);transition:width .3s}
+.refs{margin:0;padding-left:20px;display:grid;gap:8px;font-size:.92rem}
+.refs a{color:var(--pri);font-weight:600}
+footer{background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(16px,3vw,40px)}
+.flabel{font-size:.9rem;color:var(--muted);font-weight:600}
+.fnav{display:flex;gap:8px}
+.fnav button{border:1px solid var(--line);background:#fff;border-radius:var(--r-sm);padding:10px 18px;font-weight:650}
+.fnav .nx{background:var(--pri);color:#fff;border-color:var(--pri)}
+.fnav button:disabled{opacity:.35;cursor:not-allowed}
+@media(max-width:900px){.g2,.g3,.g4,.vote{grid-template-columns:1fr}.brand-s,.flabel{display:none}.barRow{grid-template-columns:100px 1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div><div class="brand-t">Climate Action: What Is Changing?</div><div class="brand-s">Core lesson · Designed and developed by Dr Sanjay Chib</div></div>
+  <div class="hbtns"><a class="hbtn" href="carbon-footprint-lab.html">Open the lab</a><span class="count" id="count"></span></div>
+</header>
+<div id="bar"><i></i></div>
+<main id="view"><div class="stage" id="stage"></div></main>
+<footer><span class="flabel" id="flabel"></span><div class="fnav"><button id="back">Back</button><button class="nx" id="next">Next</button></div></footer>
+</div>
+
+<script>
+'use strict';
+const S={vote:null,pred:{},barriers:[],alloc:[20,20,20,20,20],ipcc:{},judge:{},checks:{},future:null};
+const $=id=>document.getElementById(id);
+const chapters=['Start','Evidence','Scaling','Next questions','Judgement','Wrap-up'];
+function path(c){return '<div class="path" aria-hidden="true">'+chapters.map((n,i)=>`<span class="${i===c?'on':i<c?'done':''}">${n}</span>`).join('')+'</div>';}
+function setS(k,v){S[k]=v;render();}
+const U={a:'UNFCCC, 2026a',b:'UNFCCC, 2026b',c:'UNFCCC, 2026c',d:'UNFCCC, 2026d',e:'UNFCCC, 2026e'};
+
+const slides=[
+{label:'Is climate action working?',c:0,html:()=>{
+ const fb={progress:['There is real progress, but it is not the whole story.','Some areas are moving fast. Others are stuck or getting worse.'],failure:['Serious problems remain, but it is not a story of failure.','Several technologies and systems are scaling quickly.'],mixed:['That is closest to the 2026 evidence.','Some areas move fast while others stall or go the wrong way.']};
+ return `${path(0)}<div class="g2" style="align-items:start"><div>
+  <h1>Is climate action working?</h1><p class="lead">You have heard about climate targets for years: solar panels, electric cars, heatwaves, another summit. Before looking at any data, make a call.</p>
+  <div class="vote">${[['progress','Mostly progress'],['failure','Mostly failure'],['mixed','A mixed picture']].map(([k,t])=>`<button class="${S.vote===k?'sel':''}" onclick="setS('vote','${k}')">${t}</button>`).join('')}</div>
+  ${S.vote?`<div class="fb ${S.vote==='mixed'?'good':'warn'} fadein"><b>${fb[S.vote][0]}</b> ${fb[S.vote][1]} Next, test your call against the evidence.</div>`:'<p class="small muted" style="margin-top:10px">Choose one to continue the story.</p>'}
+ </div><div>
+  <div class="g2">${[['You have probably seen','Solar panels everywhere','mint'],['You have probably seen','Electric cars on ordinary roads','sky'],['You have probably heard of','More heat, fires and floods','peach'],['You have probably heard','Another climate promise','butter']].map(x=>`<div class="card ${x[2]}"><div class="small muted">${x[0]}</div><b>${x[1]}</b></div>`).join('')}</div>
+  <div class="card" style="margin-top:12px"><h3>By the end you can</h3><p class="small" style="margin:0;color:var(--ink2)"><b>Identify</b> where climate action is moving and where it is stuck · <b>Explain</b> why working solutions often fail to spread · <b>Judge</b> when technology genuinely helps</p></div>
+ </div></div>`;}},
+
+{label:'What is moving, what is stuck?',c:1,html:()=>{
+ const p=[
+  ['Renewable power','Wind, solar and other renewable capacity.','good','Moving strongly.','Global renewable capacity rose 17% between 2024 and 2025.','c'],
+  ['Electric vehicles','Share of new light vehicle sales.','good','Moving strongly.','About one in four new light vehicles sold in 2025 was electric.','c'],
+  ['Energy efficiency','Using less energy for the same result.','slow','Far too slow.','Improving about 1% a year, against roughly 4% needed by 2030.','c'],
+  ['Oil and gas methane','Methane leaking from fossil fuel supply.','bad','Going the wrong way.','Oil and gas methane emissions increased in 2025.','c'],
+  ['Early warning systems','Warnings before floods, storms and heat.','good','Improving.','Countries reporting multi-hazard warning systems rose from 108 to 119 (2024–2025).','d'],
+  ['Adaptation finance','Money helping places prepare for impacts.','bad','Moving backwards.','Tracked adaptation finance fell from about USD 81.5bn (2022) to USD 64.1bn (2024).','e']
+ ];
+ const lbl={good:'Moving',slow:'Too slow',bad:'Worse'};
+ return `${path(1)}<h2>Predict first. Then reveal the 2026 evidence.</h2><p class="lead">For each area, guess: moving, too slow, or getting worse?</p>
+ <div class="g3">${p.map((x,i)=>{const g=S.pred[i];return `<div class="card"><h3>${x[0]}</h3><p class="small muted" style="margin:0">${x[1]}</p><div class="row">${['good','slow','bad'].map(k=>`<button class="opt ${g===k?'sel':''}" onclick="S.pred[${i}]='${k}';render()">${lbl[k]}</button>`).join('')}</div>${g?`<div class="fadein"><span class="tag t-${x[2]}">${x[3]}</span>${g===x[2]?' <span class="small" style="color:var(--pos);font-weight:700">You called it.</span>':''}<p class="small" style="margin:6px 0 0">${x[4]} <span class="cite">(${U[x[5]]})</span></p></div>`:''}</div>`}).join('')}</div>
+ <p class="small muted" style="margin-top:10px">Revealed ${Object.keys(S.pred).length} of 6.</p>`;}},
+
+{label:'The 2026 picture',c:1,html:()=>`${path(1)}<h2>Progress is real. So are the gaps.</h2><p class="lead">The UN Climate Change yearbook tracks 96 global indicators. It does not show a simple success or failure story.</p>
+ <div class="g2" style="align-items:center"><div class="ring" style="background:conic-gradient(#8fd3b6 0 45.8%,#ffc2a6 45.8% 65.6%,#e1e5ea 65.6% 100%)"><div><b>44</b><span class="small muted">of 96 show progress</span></div></div>
+ <div class="g2"><div class="card mint"><b>44 indicators</b><p class="small" style="margin:0">show progress</p></div><div class="card peach"><b>19 indicators</b><p class="small" style="margin:0">show no progress</p></div><div class="card"><b>33 indicators</b><p class="small" style="margin:0">lack data for a clear judgement</p></div><div class="card sky"><b>84%</b><p class="small" style="margin:0">of reported acceleration plans showed some progress after one year <span class="cite">(${U.b})</span></p></div></div></div>
+ <div class="take"><b>The better question:</b> not only “do we have solutions?”, but “why do some scale quickly while others stay stuck?”</div>`},
+
+{label:'Why good ideas stall',c:2,html:()=>{
+ const b=['Not enough grid infrastructure','Too expensive to deploy widely','Workers lack the skills to run it','Rules and approvals are slow','Poor quality data','People do not trust the system'];
+ const n=S.barriers.length;
+ return `${path(2)}<h2>A solution can work and still fail to spread.</h2>
+ <div class="g2" style="align-items:start"><div class="card sky"><h3>The solution exists</h3><p>A digital system predicts electricity demand and matches it to changing wind and solar supply. Pilots work. The region wants to expand it.</p><p class="small" style="margin:0"><b>Pick the three barriers most likely to stop it.</b></p></div>
+ <div><div class="g2">${b.map((x,i)=>`<button class="tapcard ${S.barriers.includes(i)?'open':''}" onclick="toggleBarrier(${i})">${x}</button>`).join('')}</div>
+ <div class="fb ${n===3?'good':n>3?'warn':''}">${n<3?`<b>${n} selected.</b> Choose ${3-n} more.`:n===3?'<b>Good.</b> Another team may choose differently, and that is the point: scaling is usually blocked by a mix of technical, financial, human and institutional problems.':'<b>More than three.</b> Prioritise: which three would you fix first?'}</div></div></div>
+ <div class="take"><b>Implementation is a management problem:</b> policy, finance, infrastructure, skills and technology have to move together. <span class="cite">(${U.a}; ${U.b})</span></div>`;}},
+
+{label:'Make it scale',c:2,html:()=>`${path(2)}<h2>You have a working solution. Now make it scale.</h2><p class="lead">A region wants to expand a flood early warning system from one valley to twenty. You have 100 implementation points. Where do they go?</p>
+ <div class="g2" style="align-items:start"><div class="card">${['Technology','Infrastructure','People and skills','Trust and communication','Finance and policy'].map((x,i)=>`<div class="slider"><label for="a${i}"><span>${x}</span><span id="av${i}"></span></label><input id="a${i}" type="range" min="0" max="60" step="5" value="${S.alloc[i]}"></div>`).join('')}<p class="small" style="margin-top:12px"><b>Total: <span id="tot"></span> / 100</b></p></div>
+ <div class="card"><h3 id="sT"></h3><p class="small" id="sX" style="color:var(--ink2)"></p>${['Technical readiness','People readiness','Ready to scale'].map((x,i)=>`<div class="barRow"><span>${x}</span><div class="track"><i id="r${i}"></i></div></div>`).join('')}</div></div>
+ <div class="take"><b>What this shows:</b> climate technology matters only when someone can fund it, run it, trust it and connect it to the wider system.</div>`,
+ after:()=>{const upd=()=>{const v=S.alloc,t=v.reduce((a,b)=>a+b,0);v.forEach((x,i)=>$('av'+i).textContent=x);$('tot').textContent=t;
+  $('r0').style.width=Math.min(100,(v[0]+v[1])*.9)+'%';$('r1').style.width=Math.min(100,(v[2]+v[3])*.95)+'%';
+  $('r2').style.width=(t===100?Math.min(100,70+Math.min(...v)*1.5):Math.min(50,t/2))+'%';
+  if(t!==100){$('sT').textContent='Build your plan';$('sX').textContent='Allocate exactly 100 points. Current total: '+t+'.';}
+  else if(Math.min(...v)<5){$('sT').textContent='Your plan has a weak link';$('sX').textContent='One part is almost missing. Strong technology can still fail if finance, infrastructure, people or trust are ignored.';}
+  else{$('sT').textContent='Balanced enough to scale';$('sX').textContent='You spread attention across the technology and the system around it. The exact mix can vary, but implementation needs several pieces to move together.';}};
+  S.alloc.forEach((_,i)=>$('a'+i).addEventListener('input',e=>{S.alloc[i]=+e.target.value;upd();}));upd();}},
+
+{label:'What science is examining next',c:3,html:()=>{
+ const c=[['Cities','Heat, flooding, transport, buildings and water.','More people live in cities, where many risks and solutions concentrate. A special IPCC report on cities is planned for 2027.','a'],['Carbon removal','Measuring technologies that take CO₂ out of the air.','Removal is entering net zero plans, so measurement quality matters. A methodology report is planned for 2027.','a'],['Short-lived pollutants','Methane and others that drive near-term warming.','CO₂ is not the only problem. A methodology report is planned for 2027.','a'],['The next global assessment','What has changed in science, impacts and solutions.','The AR7 Synthesis Report is planned for late 2029.','b']];
+ return `${path(3)}<h2>The next climate questions are already on the table.</h2><p class="lead">The IPCC is preparing its seventh assessment. Tap each topic to see why it matters now.</p>
+ <div class="g4">${c.map((x,i)=>`<button class="tapcard ${S.ipcc[i]?'open':''}" onclick="S.ipcc[${i}]=!S.ipcc[${i}];render()"><b>${x[0]}</b><div class="small muted">${x[1]}</div>${S.ipcc[i]?`<div class="more fadein">${x[2]} <span class="cite">(IPCC, 2026${x[3]})</span></div>`:'<div class="small" style="color:var(--pri);margin-top:6px;font-weight:650">Why now?</div>'}</button>`).join('')}</div>
+ <div class="take"><b>Notice the shift:</b> the questions are less about whether climate change is real, and more about managing impacts and measuring solutions.</div>`;}},
+
+{label:'Useful tool or hype?',c:4,html:()=>{
+ const j=[['AI predicts when electricity demand will peak; grid operators use it to cut waste.','useful','Useful if the forecast changes real decisions and the result can be measured.'],['A company adds “AI-powered sustainability” to its website, with no evidence of change.','hype','Mostly marketing until it shows what problem AI solves and what improved.'],['Satellite data detects a major methane leak, and the operator fixes it.','useful','Useful: information leads directly to an action that cuts emissions.'],['An app sends climate facts to users; nobody knows if behaviour changes.','hype','Possibly useful, but awareness alone is not evidence of impact.'],['AI routes emergency teams during a flood using live road data.','useful','Potentially very useful, if the data is reliable and response improves.'],['AI generates thousands of ads encouraging more consumption, called “digital efficiency”.','hype','Efficient marketing is not the same as climate benefit.']];
+ const done=Object.keys(S.judge).length;
+ return `${path(4)}<h2>Judge the purpose, not the technology label.</h2><p class="lead">For each claim, decide: useful climate tool, or decoration?</p>
+ <div class="g3">${j.map((x,i)=>{const p=S.judge[i];return `<div class="card"><p class="small" style="font-weight:600;color:var(--ink)">${x[0]}</p><div class="row">${['useful','hype'].map(k=>`<button class="opt ${p===k?'sel':''}" onclick="S.judge[${i}]='${k}';render()">${k==='useful'?'Useful':'Hype'}</button>`).join('')}</div>${p?`<div class="fb ${p===x[1]?'good':'warn'} fadein">${x[2]}</div>`:''}</div>`}).join('')}</div>
+ ${done>=3?`<div class="take fadein"><b>Simple test:</b> what problem is solved, what decision changes, and can the result be measured?</div>`:''}`;}},
+
+{label:'Digital is not automatically green',c:4,html:()=>{
+ const h=[['Social post','“Scientists admit renewable energy does not work.”','No source, no date, no study. Treat as unverified until you find the original.'],['UN Climate Change','“Renewable capacity increased 17% between 2024 and 2025.”','Named institution, current date, measurable indicator, traceable source.'],['Company advert','“Our AI platform makes your business climate positive.”','What changed, compared with what, measured how, and verified by whom?']];
+ return `${path(4)}<h2>Digital can help, and digital can create new problems.</h2>
+ <div class="g4">${[['Energy use','AI, cloud and data centres need electricity and infrastructure.','peach'],['Access','A tool helps less if communities lack the technology, data or skills.','butter'],['Bad data','A sophisticated model still fails on weak information.','lav'],['Misinformation','The same tools can spread misleading climate claims.','sky']].map(x=>`<div class="card ${x[2]}"><b>${x[0]}</b><p class="small" style="margin:4px 0 0">${x[1]}</p></div>`).join('')}</div>
+ <h3 style="margin-top:18px">Check the claim. Tap each one.</h3>
+ <div class="g3">${h.map((x,i)=>`<button class="tapcard ${S.checks[i]?'open':''}" onclick="S.checks[${i}]=!S.checks[${i}];render()"><div class="small muted">${x[0]}</div><b>${x[1]}</b>${S.checks[i]?`<div class="more fadein"><b>Check:</b> ${x[2]}</div>`:''}</button>`).join('')}</div>
+ <div class="row">${['Source: who says it?','Date: is it current?','Evidence: what is it based on?','Original: can you find it?'].map(x=>`<span class="opt" style="cursor:default">${x}</span>`).join('')}</div>
+ <p class="small muted" style="margin-top:10px">The 2026 climate action agenda includes responsible access, skills and information integrity alongside AI and digital tools. <span class="cite">(${U.e})</span></p>`;}},
+
+{label:'Looking to 2035',c:5,html:()=>{
+ const f=[['Clean electricity','Already scaling quickly.','More grids, storage, faster approvals and better demand management.'],['Climate-resilient cities','Planning is ahead of physical resilience.','Finance, local delivery, heat and flood protection, better data.'],['Carbon removal','Exists, but scale and credibility are open questions.','Better measurement, lower costs, storage and credible demand.'],['Methane reduction','Solutions exist; progress is weak.','Detection, enforcement, repair and incentives.'],['Early warning and adaptation','More systems, but exposure still growing.','Reach more people, improve local response, fund resilience.'],['AI and digital tools','Growing fast, hard to measure.','Prove outcomes, widen access and skills, avoid new risks.']];
+ return `${path(5)}<h2>Which area could change fastest by 2035?</h2><p class="lead">Pick one. The task is not to predict perfectly, but to say what would have to happen.</p>
+ <div class="g3">${f.map((x,i)=>`<button class="tapcard ${S.future===i?'open':''}" onclick="setS('future',${i})"><b>${x[0]}</b><div class="small muted">${x[1]}</div>${S.future===i?`<div class="more fadein"><b>What must happen:</b> ${x[2]}</div>`:''}</button>`).join('')}</div>
+ <div class="g3" style="margin-top:16px">${[['Not standing still','Some areas move quickly.','mint'],['Uneven progress','Some areas are too slow or worsening.','peach'],['Technology accelerates','It matters only if it changes a decision.','sky']].map(x=>`<div class="card ${x[2]}"><b>${x[0]}</b><p class="small" style="margin:4px 0 0">${x[1]}</p></div>`).join('')}</div>
+ <div class="card lav" style="margin-top:16px"><div class="g2" style="align-items:center"><div><h3>Now make it personal</h3><p class="small" style="margin:0">Before anything can scale, it has to be measured. The lab shows how your own spending turns into emissions.</p></div><div style="text-align:right"><a class="btn" href="carbon-footprint-lab.html">Open the Carbon Footprint Lab</a></div></div></div>`;}},
+
+{label:'Sources',c:5,html:()=>`${path(5)}<h2>Sources</h2><div class="card"><ol class="refs">
+ <li>Intergovernmental Panel on Climate Change. (2026a). <i>2026: Seventh assessment cycle work and planned reports.</i> <a href="https://www.ipcc.ch/2026/" target="_blank" rel="noopener">ipcc.ch</a></li>
+ <li>Intergovernmental Panel on Climate Change. (2026b). <i>Seventh Assessment Report.</i> <a href="https://www.ipcc.ch/assessment-report/ar7/" target="_blank" rel="noopener">ipcc.ch</a></li>
+ <li>United Nations Framework Convention on Climate Change. (2026a). <i>About COP31.</i> <a href="https://unfccc.int/cop31/about" target="_blank" rel="noopener">unfccc.int</a></li>
+ <li>United Nations Framework Convention on Climate Change. (2026b). <i>Yearbook of Global Climate Action 2026.</i> <a href="https://unfccc.int/resource/yearbook-global-climate-action-2026/" target="_blank" rel="noopener">unfccc.int</a></li>
+ <li>United Nations Framework Convention on Climate Change. (2026c). <i>Axis 1: Transitioning energy, industry, and transport.</i> <a href="https://unfccc.int/resource/yearbook-global-climate-action-2026/axis-1/" target="_blank" rel="noopener">unfccc.int</a></li>
+ <li>United Nations Framework Convention on Climate Change. (2026d). <i>Axis 4: Building resilience for cities, infrastructure and water.</i> <a href="https://unfccc.int/resource/yearbook-global-climate-action-2026/axis-4/" target="_blank" rel="noopener">unfccc.int</a></li>
+ <li>United Nations Framework Convention on Climate Change. (2026e). <i>Axis 6: Unleashing enablers and accelerators.</i> <a href="https://unfccc.int/resource/yearbook-global-climate-action-2026/axis-6/" target="_blank" rel="noopener">unfccc.int</a></li>
+ </ol><p class="small muted" style="margin-top:12px">The grid and flood scenarios and the scaling exercise are illustrative.</p></div>`}
+];
+
+function toggleBarrier(i){const a=S.barriers,k=a.indexOf(i);if(k>-1)a.splice(k,1);else a.push(i);render();}
+let idx=0;
+function render(){const s=slides[idx];$('stage').innerHTML=s.html();if(s.after)s.after();$('count').textContent=(idx+1)+' / '+slides.length;document.querySelector('#bar i').style.width=((idx+1)/slides.length*100)+'%';$('flabel').textContent=s.label;$('back').disabled=idx===0;$('next').disabled=idx===slides.length-1;}
+function stepTo(n){if(n<0||n>=slides.length)return;idx=n;render();$('view').scrollTop=0;}
+$('back').onclick=()=>stepTo(idx-1);$('next').onclick=()=>stepTo(idx+1);
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')stepTo(idx+1);if(e.key==='ArrowLeft')stepTo(idx-1);});
+render();
+</script>
+</body>
+</html>
