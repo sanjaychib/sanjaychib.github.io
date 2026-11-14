@@ -1,265 +1,171 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sanjay Chib · Portfolio</title>
-<meta name="description" content="Portfolio of interactive learning examples designed with AI by Sanjay Chib.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Interactive learning designed with AI by Sanjay Chib, for workplace learning and higher education.">
 <style>
 :root{
-  --ink:#121933;
-  --ink-2:#3c4664;
-  --muted:#6a7590;
-  --paper:#f6f7fb;
-  --panel:#ffffff;
-  --line:#e3e7f0;
-  --blue:#2f55f4;  --blue-soft:#eaefff;
-  --green:#0f7a58; --green-soft:#e4f5ee;
-  --violet:#6a46e8;--violet-soft:#efeaff;
-  --amber:#b86a00; --amber-soft:#fff3df;
-  --radius:22px;
+  --ink:#1f2433;--ink2:#454b60;--muted:#6b7186;--line:#e1e4ee;--bg:#f5f6fb;--paper:#fff;
+  --pri:#4b5bd6;--priDk:#3a48b8;
+  --lav:#ece9ff;--lavInk:#4b3fb0;--mint:#dff4ea;--mintInk:#1f7a52;--peach:#ffe7dc;--peachInk:#b4512c;--sky:#e1efff;--skyInk:#2e5f9e;--butter:#fff3cc;--butterInk:#8a6200;
+  --r-lg:20px;--r-md:14px
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:17px;line-height:1.55}
 a{color:inherit}
-a:focus-visible,button:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:10px}
-.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 
-/* ---------- hero ---------- */
-header{position:relative;overflow:hidden;padding:72px 0 56px;
-  background:
-    radial-gradient(600px 300px at 85% 10%, rgba(106,70,232,.16), transparent 70%),
-    radial-gradient(520px 280px at 10% 90%, rgba(47,85,244,.14), transparent 70%),
-    linear-gradient(180deg,#fff, var(--paper));
-  border-bottom:1px solid var(--line)}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--blue-soft);padding:7px 12px;border-radius:999px}
-.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--blue)}
-h1{font-family:Sora,Inter,sans-serif;font-weight:800;font-size:clamp(2.6rem,6.4vw,4.8rem);line-height:1.02;letter-spacing:-.035em;margin:18px 0 16px}
-.tagline{font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ink-2);max-width:700px;margin:0}
+header{padding:56px 0 30px}
+h1{font-size:clamp(2.2rem,5vw,3.2rem);line-height:1.08;margin:0 0 12px;letter-spacing:-.02em}
+.lede{max-width:62ch;color:var(--ink2);font-size:1.12rem;margin:0}
+.approach{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 0;padding:0;list-style:none}
+.approach li{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 13px 5px 5px;font-size:.88rem}
+.approach b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--lav);color:var(--lavInk);font-size:.78rem}
+.jump{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.jump a{text-decoration:none;font-weight:650;font-size:.95rem;padding:10px 16px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.jump a:hover{border-color:#b7bdf0}
 
-/* decision strip: signature element */
-.decision-strip{margin-top:34px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.ds-label{font-size:.82rem;font-weight:700;color:var(--muted);margin-right:4px}
-.ds-step{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 13px;font-weight:600;font-size:.92rem;box-shadow:0 2px 6px rgba(18,25,51,.04)}
-.ds-step b{font-family:Sora,sans-serif;font-size:.78rem;color:#fff;background:var(--ink);border-radius:7px;padding:2px 7px}
-.ds-arrow{color:#b3bacb;font-weight:700}
+section{padding:34px 0 10px;scroll-margin-top:10px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:16px;border-top:1px solid var(--line);padding-top:26px}
+h2{font-size:1.7rem;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:2px 0 0;font-size:.98rem}
 
-.stats{margin-top:30px;display:flex;flex-wrap:wrap;gap:28px}
-.stat strong{display:block;font-family:Sora,sans-serif;font-size:1.6rem;line-height:1}
-.stat span{font-size:.86rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.subject{font-size:.82rem;font-weight:700;padding:3px 10px;border-radius:99px}
+.level{font-size:.8rem;color:var(--muted);font-weight:600}
+.mode{display:inline-block;align-self:flex-start;font-size:.76rem;font-weight:650;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:99px;padding:2px 9px;margin-top:10px}
+.card h3{font-size:1.15rem;line-height:1.3;margin:12px 0 6px}
+.line{color:var(--ink2);font-size:.95rem;margin:0 0 12px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tags span{font-size:.76rem;background:var(--bg);border-radius:6px;padding:3px 8px;color:var(--ink2)}
+details{margin-top:auto;border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:650;font-size:.9rem;color:var(--ink2);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:" ▾"}
+details[open] summary::after{content:" ▴"}
+details ul{margin:8px 0 0;padding-left:18px;font-size:.9rem;color:var(--ink2)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{text-decoration:none;font-weight:650;font-size:.92rem;padding:9px 14px;border-radius:10px;background:var(--pri);color:#fff}
+.btn:hover{background:var(--priDk)}
+.btn.alt{background:#fff;color:var(--pri);border:1.5px solid #c9cef5}
 
-/* ---------- filters ---------- */
-.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin:44px 0 20px}
-.toolbar h2{font-family:Sora,sans-serif;font-size:1.5rem;letter-spacing:-.02em;margin:0}
-.filters{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:#fff;color:var(--ink-2);font:inherit;font-weight:600;font-size:.9rem;padding:8px 14px;border-radius:999px;cursor:pointer;transition:all .15s ease}
-.chip:hover{border-color:#c4cbe0}
-.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.s-ai{background:var(--lav);color:var(--lavInk)}.s-sus{background:var(--mint);color:var(--mintInk)}.s-biz{background:var(--peach);color:var(--peachInk)}.s-data{background:var(--sky);color:var(--skyInk)}.s-ent{background:var(--butter);color:var(--butterInk)}
 
-/* ---------- cards ---------- */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{--c:var(--blue);--c-soft:var(--blue-soft);
-  position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;text-decoration:none;
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
-.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(18,25,51,.10);border-color:color-mix(in srgb,var(--c) 35%,var(--line))}
-.card[data-theme="sustain"]{--c:var(--green);--c-soft:var(--green-soft)}
-.card[data-theme="literacy"]{--c:var(--violet);--c-soft:var(--violet-soft)}
-.card[data-theme="judgement"]{--c:var(--blue);--c-soft:var(--blue-soft)}
-.card[data-theme="inputs"]{--c:var(--amber);--c-soft:var(--amber-soft)}
-
-/* preview: mini decision UI */
-.preview{position:relative;padding:20px 20px 18px;background:
-  linear-gradient(135deg,var(--c-soft),#fff 85%);border-bottom:1px solid var(--line);min-height:150px}
-.preview .ptag{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--c)}
-.preview .pq{font-family:Sora,sans-serif;font-weight:700;font-size:1.02rem;line-height:1.3;margin:8px 0 14px;color:var(--ink)}
-.opts{display:flex;flex-wrap:wrap;gap:6px}
-.opt{font-size:.78rem;font-weight:700;padding:6px 10px;border-radius:9px;background:#fff;border:1px solid var(--line);color:var(--ink-2)}
-.opt.on{background:var(--c);border-color:var(--c);color:#fff;box-shadow:0 4px 10px color-mix(in srgb,var(--c) 30%,transparent)}
-.num{position:absolute;top:16px;right:18px;font-family:Sora,sans-serif;font-weight:800;font-size:2.2rem;line-height:1;color:color-mix(in srgb,var(--c) 22%,transparent)}
-
-.body{display:flex;flex-direction:column;flex:1;padding:18px 20px 20px}
-.body h3{font-family:Sora,sans-serif;font-size:1.16rem;letter-spacing:-.01em;margin:0 0 8px}
-.body p{margin:0 0 14px;color:var(--muted);font-size:.94rem}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.tag{font-size:.76rem;font-weight:600;color:var(--ink-2);background:var(--paper);border:1px solid var(--line);padding:4px 9px;border-radius:999px}
-.tag.std{color:var(--c);background:var(--c-soft);border-color:transparent}
-.open{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--c)}
-.open .arr{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--c-soft);transition:transform .2s ease}
-.card:hover .arr{transform:translateX(4px)}
-.card.hide{display:none}
-
-/* ---------- approach ---------- */
-.approach{margin:56px 0 0;display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
-.panel h3{font-family:Sora,sans-serif;font-size:1.15rem;margin:0 0 10px}
-.panel p{color:var(--muted);margin:0}
-.points{list-style:none;padding:0;margin:4px 0 0}
-.points li{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);color:var(--ink-2);font-size:.95rem}
-.points li:first-child{border-top:0}
-.points li::before{content:"";flex:0 0 9px;height:9px;margin-top:7px;border-radius:50%;background:var(--blue)}
-
-footer{margin:48px 0 40px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:var(--muted);font-size:.9rem}
-footer a{color:var(--blue);font-weight:600;text-decoration:none}
-footer a:hover{text-decoration:underline}
-
-@media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.approach{grid-template-columns:1fr}}
-@media (max-width:620px){.grid{grid-template-columns:1fr}header{padding:44px 0 36px}.ds-arrow{display:none}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:34px 0;margin-top:24px;border-top:1px solid var(--line)}
+.info h2{font-size:1.15rem;margin-bottom:6px}
+.info p,.info li{color:var(--ink2);font-size:.95rem}
+.info ul{margin:0;padding-left:18px}
+footer{padding:20px 0 44px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.92rem}
+@media(max-width:760px){header{padding-top:36px}.info{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
+<div class="wrap">
 <header>
-  <div class="wrap">
-    <span class="eyebrow">Portfolio</span>
-    <h1>Sanjay Chib</h1>
-    <p class="tagline">Interactive learning examples showing how AI can support the design of practical, work-based learning and content. Each one puts the learner in a real decision and gives feedback along the way.</p>
-
-    <div class="decision-strip" aria-label="Design approach">
-      <span class="ds-label">Design approach</span>
-      <span class="ds-step"><b>1</b>Work changes</span><span class="ds-arrow">›</span>
-      <span class="ds-step"><b>2</b>Capability gap</span><span class="ds-arrow">›</span>
-      <span class="ds-step"><b>3</b>Behaviour defined</span><span class="ds-arrow">›</span>
-      <span class="ds-step"><b>4</b>Practice</span><span class="ds-arrow">›</span>
-      <span class="ds-step"><b>5</b>Feedback</span>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><strong>5</strong><span>interactive examples</span></div>
-      <div class="stat"><strong>2</strong><span>built on published standards</span></div>
-      <div class="stat"><strong>0</strong><span>installs needed, runs in any browser</span></div>
-    </div>
-  </div>
+  <h1>Sanjay Chib</h1>
+  <p class="lede">Interactive learning designed with AI, for the workplace and for higher education. Good teaching is still storytelling; these pieces add what people now expect on screen: content they can act on, with feedback.</p>
+  <ol class="approach" aria-label="Design approach">
+    <li><b>1</b>Work changes</li><li><b>2</b>Capability gap</li><li><b>3</b>Behaviour defined</li><li><b>4</b>Practice</li><li><b>5</b>Feedback</li>
+  </ol>
+  <nav class="jump" aria-label="Sections"><a href="#workplace">Workplace learning</a><a href="#higher-education">Higher education</a></nav>
 </header>
 
-<main class="wrap">
-  <div class="toolbar">
-    <h2>Examples</h2>
-    <div class="filters" role="group" aria-label="Filter examples">
-      <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
-      <button class="chip" type="button" data-filter="ai" aria-pressed="false">Working with AI</button>
-      <button class="chip" type="button" data-filter="standards" aria-pressed="false">Standards based</button>
-    </div>
-  </div>
+<section id="workplace">
+  <div class="sec-head"><div><h2>Workplace learning</h2><p class="sub">Short simulations and job aids for teams adopting AI and new rules</p></div></div>
+  <div class="grid">
 
-  <div class="grid" id="grid">
+    <article class="card"><div class="top"><span class="subject s-ai">AI judgement</span><span class="level">Workplace</span></div>
+      <span class="mode">Self-paced</span>
+      <h3>Can you trust the AI recommendation?</h3><p class="line">Check an AI-prepared case against the evidence and decide whether it can move forward.</p>
+      <div class="tags"><span>Simulation</span><span>Decision</span></div>
+      <details><summary>What learners gain</summary><ul><li>Verify AI output against sources</li><li>Choose to accept, modify, question or escalate</li></ul></details>
+      <div class="actions"><a class="btn" href="https://sanjaychib.github.io/ai-capability-demo/">Open</a></div></article>
 
-    <a class="card" data-theme="judgement" data-cat="ai" href="https://sanjaychib.github.io/ai-capability-demo/">
-      <div class="preview">
-        <span class="num">01</span>
-        <span class="ptag">Judgement</span>
-        <div class="pq">Can you trust the AI recommendation?</div>
-        <div class="opts"><span class="opt">Accept</span><span class="opt on">Modify</span><span class="opt">Question</span><span class="opt">Escalate</span></div>
-      </div>
-      <div class="body">
-        <h3>AI Capability Simulation</h3>
-        <p>An AI assistant has prepared a case for review. The learner checks it against the source evidence and decides whether it can move forward.</p>
-        <div class="tags"><span class="tag">Verify</span><span class="tag">Decide</span><span class="tag">Intervene</span></div>
-        <span class="open">Open example <span class="arr" aria-hidden="true">→</span></span>
-      </div>
-    </a>
+    <article class="card"><div class="top"><span class="subject s-ai">AI in practice</span><span class="level">Managers</span></div>
+      <span class="mode">Self-paced</span>
+      <h3>Would you use this AI briefing?</h3><p class="line">Test the evidence behind an AI-drafted briefing before a senior meeting.</p>
+      <div class="tags"><span>Simulation</span><span>Managers</span></div>
+      <details><summary>What learners gain</summary><ul><li>Check what an AI draft rests on</li><li>Move from training to real practice</li></ul></details>
+      <div class="actions"><a class="btn" href="https://sanjaychib.github.io/ai-active-practice-demo/">Open</a></div></article>
 
-    <a class="card" data-theme="judgement" data-cat="ai" href="https://sanjaychib.github.io/ai-active-practice-demo/">
-      <div class="preview">
-        <span class="num">02</span>
-        <span class="ptag">Practice</span>
-        <div class="pq">Would you use this AI briefing?</div>
-        <div class="opts"><span class="opt">Use as is</span><span class="opt on">Revise first</span><span class="opt">Start again</span></div>
-      </div>
-      <div class="body">
-        <h3>Active Practice Simulation</h3>
-        <p>As a manager preparing an update for a senior meeting, the learner checks the evidence behind an AI-drafted briefing and decides what to do next.</p>
-        <div class="tags"><span class="tag">From training to practice</span><span class="tag">Managers</span></div>
-        <span class="open">Open example <span class="arr" aria-hidden="true">→</span></span>
-      </div>
-    </a>
+    <article class="card"><div class="top"><span class="subject s-data">Information quality</span><span class="level">Workplace</span></div>
+      <span class="mode">Self-paced</span>
+      <h3>Is this information reliable enough to use?</h3><p class="line">Judge four sources before AI turns them into a summary.</p>
+      <div class="tags"><span>Simulation</span><span>Data judgement</span></div>
+      <details><summary>What learners gain</summary><ul><li>Rate sources from policy to staff notes</li><li>Fix inputs before trusting outputs</li></ul></details>
+      <div class="actions"><a class="btn" href="https://sanjaychib.github.io/ai-information-quality-demo/">Open</a></div></article>
 
-    <a class="card" data-theme="inputs" data-cat="ai" href="https://sanjaychib.github.io/ai-information-quality-demo/">
-      <div class="preview">
-        <span class="num">03</span>
-        <span class="ptag">Information quality</span>
-        <div class="pq">Is this information reliable enough to use?</div>
-        <div class="opts"><span class="opt">Use it</span><span class="opt on">Check it first</span><span class="opt">Do not use it</span></div>
-      </div>
-      <div class="body">
-        <h3>Information Quality Check</h3>
-        <p>Before AI writes a summary, the learner reviews four sources, from a policy record to staff notes, and decides how far each one can be trusted.</p>
-        <div class="tags"><span class="tag">Inputs before outputs</span><span class="tag">Data judgement</span></div>
-        <span class="open">Open example <span class="arr" aria-hidden="true">→</span></span>
-      </div>
-    </a>
+    <article class="card"><div class="top"><span class="subject s-sus">Sustainability</span><span class="level">Workplace</span></div>
+      <span class="mode">Self-paced</span>
+      <h3>Would this green claim pass?</h3><p class="line">Test AI-drafted product claims against the rules, then take away a checklist.</p>
+      <div class="tags"><span>EU Directive 2024/825</span><span>ISO 14021</span><span>Job aid</span></div>
+      <details><summary>What learners gain</summary><ul><li>Spot claims that need evidence</li><li>Use a checklist on real copy</li></ul></details>
+      <div class="actions"><a class="btn" href="https://sanjaychib.github.io/green-claims-check/">Open</a></div></article>
 
-    <a class="card" data-theme="sustain" data-cat="standards" href="https://sanjaychib.github.io/green-claims-check/">
-      <div class="preview">
-        <span class="num">04</span>
-        <span class="ptag">Sustainability</span>
-        <div class="pq">Would this green claim pass?</div>
-        <div class="opts"><span class="opt">OK with evidence</span><span class="opt on">Not allowed as written</span></div>
-      </div>
-      <div class="body">
-        <h3>Green Claims Check</h3>
-        <p>AI has drafted product copy. The learner tests each environmental claim against the rules, then takes away a checklist for real use.</p>
-        <div class="tags"><span class="tag std">EU Directive 2024/825</span><span class="tag std">ISO 14021</span><span class="tag">Job aid</span></div>
-        <span class="open">Open example <span class="arr" aria-hidden="true">→</span></span>
-      </div>
-    </a>
-
-    <a class="card" data-theme="literacy" data-cat="standards ai" href="https://sanjaychib.github.io/ai-use-triage/">
-      <div class="preview">
-        <span class="num">05</span>
-        <span class="ptag">AI literacy</span>
-        <div class="pq">How much care does this AI use need?</div>
-        <div class="opts"><span class="opt">Prohibited</span><span class="opt on">High-risk</span><span class="opt">Transparency</span><span class="opt">Minimal</span></div>
-      </div>
-      <div class="body">
-        <h3>AI Use Triage</h3>
-        <p>The learner sorts real workplace AI uses into the risk levels of the EU AI Act, and finishes with a triage card for teams adopting AI tools.</p>
-        <div class="tags"><span class="tag std">EU AI Act</span><span class="tag">Job aid</span></div>
-        <span class="open">Open example <span class="arr" aria-hidden="true">→</span></span>
-      </div>
-    </a>
+    <article class="card"><div class="top"><span class="subject s-ai">AI literacy</span><span class="level">Workplace</span></div>
+      <span class="mode">Self-paced</span>
+      <h3>How much care does this AI use need?</h3><p class="line">Sort workplace AI uses into the EU AI Act risk levels.</p>
+      <div class="tags"><span>EU AI Act</span><span>Job aid</span></div>
+      <details><summary>What learners gain</summary><ul><li>Recognise prohibited and high-risk uses</li><li>Leave with a triage card for teams</li></ul></details>
+      <div class="actions"><a class="btn" href="https://sanjaychib.github.io/ai-use-triage/">Open</a></div></article>
 
   </div>
+</section>
 
-  <section class="approach">
-    <div class="panel">
-      <h3>How these are built</h3>
-      <p>Each example starts from a change in how work is done, defines the behaviour people now need, and lets them practise it in a short, realistic scenario with feedback. Where a standard or regulation applies, the feedback cites it and the learner leaves with a job aid.</p>
-    </div>
-    <div class="panel">
-      <h3>Practical details</h3>
-      <ul class="points">
-        <li>Single, self-contained web pages: no platform, licence or install</li>
-        <li>Work on desktop and mobile, with keyboard navigation</li>
-        <li>Content developed with AI, reviewed and structured by hand</li>
-        <li>Scenarios are illustrative and do not represent any organisation</li>
-      </ul>
-    </div>
-  </section>
+<section id="higher-education">
+  <div class="sec-head"><div><h2>Higher education</h2><p class="sub">Interactive lessons · undergraduate and postgraduate</p></div></div>
+  <div class="grid">
 
-  <footer>
-    <span>Sanjay Chib</span>
-    <a href="https://www.linkedin.com/in/sanjay-c-790b061/">LinkedIn</a>
-  </footer>
-</main>
+    <article class="card"><div class="top"><span class="subject s-ai">AI in business</span><span class="level">Postgraduate</span></div>
+      <span class="mode">Instructor-led · group work</span>
+      <h3>Where is AI actually worth using?</h3><p class="line">Decide where AI should help in a real sales process, and where it should stop.</p>
+      <div class="tags"><span>Case</span><span>Workflow redesign</span><span>Group work</span></div>
+      <details><summary>What learners gain</summary><ul><li>Judge AI by value, not novelty</li><li>Redesign a workflow with clear human limits</li><li>Defend a pilot with a business case</li></ul></details>
+      <div class="actions"><a class="btn" href="lessons/where-is-ai-worth-using.html">Open lesson</a></div></article>
 
-<script>
-(function(){
-  const chips=[...document.querySelectorAll('.chip')];
-  const cards=[...document.querySelectorAll('.card')];
-  chips.forEach(ch=>ch.addEventListener('click',()=>{
-    const f=ch.dataset.filter;
-    chips.forEach(c=>c.setAttribute('aria-pressed',c===ch?'true':'false'));
-    cards.forEach(card=>{
-      const cats=card.dataset.cat.split(' ');
-      card.classList.toggle('hide', f!=='all' && !cats.includes(f));
-    });
-  }));
-})();
-</script>
+    <article class="card"><div class="top"><span class="subject s-ent">Entrepreneurship</span><span class="level">Postgraduate</span></div>
+      <span class="mode">Instructor-led · works self-paced</span>
+      <h3>From signal to business</h3><p class="line">Take one idea from first instinct to an evidence-based decision to grow, change or stop.</p>
+      <div class="tags"><span>Simulations</span><span>Venture file</span></div>
+      <details><summary>What learners gain</summary><ul><li>Tell a trend from a real problem</li><li>Test an idea with evidence, not enthusiasm</li><li>Find where customers drop off</li></ul></details>
+      <div class="actions"><a class="btn" href="lessons/from-signal-to-business.html">Open lesson</a></div></article>
+
+    <article class="card"><div class="top"><span class="subject s-data">AI decision support</span><span class="level">Postgraduate</span></div>
+      <span class="mode">Self-paced demo</span>
+      <h3>Hospitality location screen</h3><p class="line">A prototype that tests an investment idea against real market data, and flags what is still unknown.</p>
+      <div class="tags"><span>Prototype</span><span>Evidence-led</span></div>
+      <details><summary>What learners gain</summary><ul><li>Read market evidence before investing</li><li>See AI interpret evidence without inventing it</li><li>Spot what must be checked next</li></ul></details>
+      <div class="actions"><a class="btn" href="lessons/hospitality-location-screen.html">Open prototype</a></div></article>
+
+    <article class="card"><div class="top"><span class="subject s-biz">Sales &amp; finance</span><span class="level">Undergraduate</span></div>
+      <span class="mode">Instructor-led · works self-paced</span>
+      <h3>Busy isn't profitable</h3><p class="line">Follow owners, profit and demand through to a forecast, a budget and a sales decision.</p>
+      <div class="tags"><span>Story-led</span><span>Forecast simulator</span></div>
+      <details><summary>What learners gain</summary><ul><li>Link owner priorities to sales choices</li><li>Build a simple forecast and spending plan</li><li>Defend a sales response with numbers</li></ul></details>
+      <div class="actions"><a class="btn" href="lessons/busy-isnt-profitable.html">Open lesson</a></div></article>
+
+    <article class="card"><div class="top"><span class="subject s-sus">Sustainability</span><span class="level">Undergraduate</span></div>
+      <span class="mode">Instructor-led lesson · lab in class or self-paced</span>
+      <h3>Climate action, plus a footprint lab</h3><p class="line">A core lesson on what is really changing, with a lab to measure, reduce and balance your own footprint.</p>
+      <div class="tags"><span>Core lesson</span><span>Supporting lab</span></div>
+      <details><summary>What learners gain</summary><ul><li>Separate real progress from promises</li><li>Explain why working solutions stall</li><li>Measure, reduce, then balance a footprint</li></ul></details>
+      <div class="actions"><a class="btn" href="lessons/climate-action.html">Open lesson</a><a class="btn alt" href="lessons/carbon-footprint-lab.html">Open lab</a></div></article>
+
+  </div>
+</section>
+
+<div class="info">
+  <div><h2>How these are built</h2><p>Each piece starts from a change in how work is done or how a subject is applied, defines what people now need to do, and lets them practise it with feedback. Where a standard or regulation applies, the feedback cites it.</p></div>
+  <div><h2>Practical details</h2><ul><li>Single web pages: no platform, licence or install</li><li>Work on desktop and mobile, with keyboard navigation</li><li>Developed with AI, reviewed and structured by hand</li><li>Scenarios and businesses are fictional unless sourced</li><li>Designed for live classes and self-paced use: the facilitator runs discussion and group tasks; each piece also stands alone</li></ul></div>
+</div>
+
+<footer><span>Sanjay Chib</span><a href="https://www.linkedin.com/in/sanjay-c-790b061/" target="_blank" rel="noopener">LinkedIn</a></footer>
+</div>
 </body>
 </html>
