@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Where Is AI Worth Using?</title>
+<style>
+:root{
+  --ink:#1d2742;--muted:#68738a;--line:#dce3ee;
+  --blue:#2563eb;--violet:#7c3aed;--coral:#f97360;--amber:#f2b84b;
+  --mint:#14b8a6;--rose:#db5b9a;--cyan:#0ea5c6;
+  --softB:#eef4ff;--softV:#f4efff;--softA:#fff7e6;--softM:#eaf9f6;--softR:#fff0f4;
+  --shadow:0 16px 40px rgba(39,54,91,.10)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,#f7f9fc 0%,#fffaf1 46%,#f2faf8 100%);
+  line-height:1.5
+}
+.wrap{max-width:1240px;margin:auto;padding:0 28px}
+.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:22px;padding:28px 0 18px}
+.heroA,.heroB,.sec{border-radius:26px;box-shadow:var(--shadow)}
+.heroA{
+  min-height:56vh;padding:46px;color:white;display:flex;flex-direction:column;justify-content:center;
+  background:linear-gradient(135deg,#2563eb 0%,#7c3aed 50%,#db5b9a 100%)
+}
+.heroB{
+  padding:34px;background:white;border:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:space-between
+}
+.kicker,.badge,.pill{display:inline-block;width:max-content;border-radius:999px;font-weight:900}
+.kicker,.badge{padding:8px 12px;text-transform:uppercase;letter-spacing:.07em;font-size:.78rem}
+.kicker{background:#ffffff2a}.badge{background:#e8efff;color:#244fc7}
+.pill{padding:6px 10px;background:#edf2f7;color:#475569;font-size:.78rem}
+h1{font-size:clamp(3rem,6vw,5.4rem);line-height:.95;letter-spacing:-.055em;margin:18px 0}
+h2{font-size:clamp(2rem,4vw,3.05rem);line-height:1.04;letter-spacing:-.035em;margin:0 0 14px}
+h3{font-size:1.28rem;line-height:1.2;margin:0 0 9px}
+.lead{font-size:clamp(1.16rem,2vw,1.52rem);max-width:900px}
+.big{font-size:1.85rem;font-weight:950;line-height:1.15}
+.muted{color:var(--muted)}
+.author{margin-top:28px;color:#ffffffdf}
+nav{
+  position:sticky;top:0;z-index:50;background:#fffffff3;
+  backdrop-filter:blur(10px);border-block:1px solid var(--line)
+}
+nav .wrap{display:flex;gap:9px;overflow:auto;padding-block:10px}
+nav a{
+  white-space:nowrap;text-decoration:none;color:#34425f;background:#f2f5fa;
+  padding:9px 13px;border-radius:999px;font-weight:800
+}
+main{padding:22px 0 72px}
+.sec{padding:34px;margin:24px 0;background:white;border:1px solid var(--line)}
+.softB{background:var(--softB)}.softV{background:var(--softV)}.softA{background:var(--softA)}
+.softM{background:var(--softM)}.softR{background:var(--softR)}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:22px}
+.b{border-top:6px solid var(--blue)}.v{border-top:6px solid var(--violet)}.c{border-top:6px solid var(--coral)}
+.a{border-top:6px solid var(--amber)}.m{border-top:6px solid var(--mint)}.r{border-top:6px solid var(--rose)}
+.metric{font-size:2.8rem;font-weight:950;line-height:1;color:var(--blue)}
+.label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:var(--muted);margin-bottom:7px}
+.notice,.result,.reveal,.tip{padding:17px;border-radius:17px;margin-top:15px}
+.notice{background:#f4f7fb;border:1px solid var(--line)}
+.result{background:#edf4ff;border:1px solid #cbdcff}
+.reveal{background:#fff5db;border:1px solid #ecd18c}
+.tip{background:#eaf8f4;border:1px solid #bfe7dc}
+button{
+  border:0;border-radius:999px;padding:12px 17px;font:inherit;font-weight:900;cursor:pointer;transition:.15s ease
+}
+button:hover{transform:translateY(-1px)}
+.blue{background:var(--blue);color:white}.violet{background:var(--violet);color:white}
+.amber{background:var(--amber);color:#493300}.mint{background:var(--mint);color:#073c31}.coral{background:var(--coral);color:white}
+.soft{background:#eef2f8;color:#263654}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.choice{cursor:pointer;transition:.15s}
+.choice:hover{transform:translateY(-2px)}
+.choice.active{outline:3px solid #a7b8ff}
+.flow{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:18px 0}
+.node{padding:12px 14px;border:1px solid var(--line);border-radius:15px;background:white;min-width:125px;text-align:center;font-weight:850}
+.arrow{font-size:1.45rem;color:#7a86a1}
+.scenario{padding:15px;border-radius:16px;background:#fff;border:1px solid var(--line);margin-top:10px}
+.prompt{
+  white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.93rem;background:#f8fafc;border:1px solid var(--line);padding:17px;border-radius:16px;
+  max-height:500px;overflow:auto
+}
+label{display:block;font-weight:850;margin:12px 0 6px}
+input,textarea,select{
+  width:100%;padding:12px 13px;border:1px solid #cbd5e1;border-radius:13px;
+  background:white;color:#111827;font:inherit
+}
+textarea{resize:vertical}
+.status{font-size:.9rem;font-weight:850;color:#2e6f58;margin-left:8px}
+.calcGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.calcGrid span{display:block;font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:6px}
+.outputGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.out{background:white;border:1px solid var(--line);border-radius:18px;padding:18px}
+.out .num{font-size:2rem;font-weight:950;line-height:1.1}
+.takeaway{
+  font-size:clamp(1.45rem,2.5vw,2rem);font-weight:900;line-height:1.25;
+  padding:24px;border-radius:20px;background:linear-gradient(135deg,#edf4ff,#f6f1ff)
+}
+.optionDetail{margin-top:16px}
+.scoreRow{display:grid;grid-template-columns:1.5fr repeat(3,.8fr);gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.scoreRow:last-child{border-bottom:0}
+.scoreRow strong{font-size:.95rem}
+.scoreRow select{margin:0}
+.summaryGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.summaryItem{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:15px}
+.source{font-size:.82rem;color:var(--muted);margin-top:12px}
+footer{text-align:center;color:#72809b;padding:20px 0 48px}
+@media(max-width:980px){
+  .hero,.g2,.g3,.g4,.calcGrid,.outputGrid,.summaryGrid{grid-template-columns:1fr}
+  .scoreRow{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+<div class="hero">
+<section class="heroA">
+<span class="kicker">Workflow Deconstruction</span>
+<h1>Where is AI actually worth using?</h1>
+<p class="lead">Use one shared business case to compare different ways AI could be used, redesign the work and test whether the value justifies the effort.</p>
+<div class="author">Designed and developed by <strong>Dr Sanjay Chib</strong></div>
+</section>
+
+<aside class="heroB">
+<div>
+<div class="label">Why this topic matters</div>
+<div class="big">Seeing a workflow is useful. The management decision is deciding what should change and whether AI is the right way to change it.</div>
+</div>
+<div class="notice">Today you will work from one shared business case with a common process and operating data.</div>
+<button class="blue" onclick="document.querySelector('#outcomes').scrollIntoView()">Start</button>
+</aside>
+</div>
+</header>
+
+<nav>
+<div class="wrap">
+<a href="#outcomes">Outcomes</a>
+<a href="#adoption">Where AI is now</a>
+<a href="#case">Case</a>
+<a href="#diagnose">Diagnose</a>
+<a href="#options">3 AI choices</a>
+<a href="#design">Redesign</a>
+<a href="#stress">Test it</a>
+<a href="#economics">Business case</a>
+<a href="#takeaway">Takeaway</a>
+</div>
+</nav>
+
+<main class="wrap">
+
+<section id="outcomes" class="sec softB">
+<span class="badge">Learning outcomes</span>
+<h2>What this topic develops</h2>
+<div class="g2">
+<div class="card b">
+<h3>Outcome 1</h3>
+<p>Analyse hospitality workflows to identify high-value Artificial Intelligence opportunities.</p>
+</div>
+<div class="card v">
+<h3>Outcome 2</h3>
+<p>Design an Artificial Intelligence-enabled workflow for a hospitality context.</p>
+</div>
+</div>
+<div class="tip"><strong>By the end:</strong> you should be able to recommend one AI use case, show how the work would change and explain why the opportunity is worth testing.</div>
+</section>
+
+<section id="adoption" class="sec softV">
+<span class="badge">Where AI is now</span>
+<h2>Adoption is broad. Full scale use is still much less common.</h2>
+
+<div class="g3">
+<div class="card b">
+<div class="metric">88%</div>
+<h3>Using AI in at least one function</h3>
+<p>McKinsey reported that 88 percent of surveyed organisations were regularly using AI in at least one business function in 2025.</p>
+</div>
+
+<div class="card a">
+<div class="metric">7%</div>
+<h3>Fully scaled</h3>
+<p>In the same survey, only 7 percent reported that AI had been fully scaled across the organisation. Another 31 percent were scaling.</p>
+</div>
+
+<div class="card m">
+<div class="metric">20%</div>
+<h3>EU enterprises using AI</h3>
+<p>Eurostat reported that 20 percent of EU enterprises used AI technologies in 2025. Among large enterprises the share was 55 percent.</p>
+</div>
+</div>
+
+<div class="reveal"><strong>The useful question for managers:</strong> not whether AI exists in the organisation, but where it creates enough value to become part of normal work.</div>
+
+<div class="source">Sources: McKinsey Global Survey on the state of AI, 2025. Eurostat, Key figures on European business, 2026 edition. The surveys use different populations and definitions.</div>
+</section>
+
+<section id="case" class="sec softA">
+<span class="badge">Shared case</span>
+<h2>Asteria Events</h2>
+<p class="lead muted">Asteria is a fictional premium hospitality group with hotels, event venues, restaurants and wellness operations. This exercise focuses on corporate event sales, not room bookings.</p>
+
+<div class="g2">
+<div class="panel">
+<h3>The commercial situation</h3>
+<p>Corporate event enquiries arrive through the website, email, sales partners and existing client relationships. Enquiries range from leadership retreats to product launches and multi day conferences.</p>
+<p>Sales teams must understand the brief, check venue fit and availability, clarify missing information, prepare suitable options and build a proposal before the client can decide whether to continue.</p>
+</div>
+
+<div class="panel">
+<h3>Case data for the exercise</h3>
+<p><strong>3,600</strong> event enquiries each year</p>
+<p><strong>18 minutes</strong> average staff time to review and structure an enquiry</p>
+<p><strong>36 percent</strong> arrive without all information needed for a useful proposal</p>
+<p><strong>14 hours</strong> average time to a meaningful first response</p>
+<p><strong>28 percent</strong> of enquiries currently progress to a proposal</p>
+<p><strong>CHF 32,000</strong> average value of an event that is won</p>
+</div>
+</div>
+
+<div class="notice"><strong>Management question:</strong><br>Where could AI improve the event sales process enough to create meaningful value without weakening pricing control, accuracy or client relationships?</div>
+
+<div class="panel" style="margin-top:18px">
+<h3>Business rules for this case</h3>
+<div class="g3">
+<div class="card b">
+<strong>Venue availability</strong>
+<p>Current availability must come from the live venue system. AI or staff should not estimate it from old information.</p>
+</div>
+<div class="card a">
+<strong>Incomplete or conflicting briefs</strong>
+<p>If important event information is missing or contradictory, the client must be asked to clarify before a proposal is completed.</p>
+</div>
+<div class="card c">
+<strong>Commercial authority</strong>
+<p>A sales manager may approve discounts up to 8 percent. A larger discount requires commercial director approval.</p>
+</div>
+</div>
+</div>
+
+<div class="panel" style="margin-top:18px">
+<h3>Current process</h3>
+<div class="flow">
+<div class="node">Enquiry arrives</div><div class="arrow">→</div>
+<div class="node">Read and structure brief</div><div class="arrow">→</div>
+<div class="node">Clarify missing information</div><div class="arrow">→</div>
+<div class="node">Check venue fit and availability</div><div class="arrow">→</div>
+<div class="node">Build proposal</div><div class="arrow">→</div>
+<div class="node">Client discussion</div><div class="arrow">→</div>
+<div class="node">Agree terms</div>
+</div>
+</div>
+</section>
+
+<section id="diagnose" class="sec softM">
+<span class="badge">Step 1</span>
+<h2>Where is value being lost today?</h2>
+<p class="lead muted">Use the case data. Do not start with AI yet.</p>
+
+<div class="g4" id="diagnoseCards">
+<div class="card choice b" data-diagnose="time">
+<h3>Manual review</h3>
+<p>Every enquiry has to be read and structured before the sales team can decide what to do next.</p>
+</div>
+<div class="card choice a" data-diagnose="missing">
+<h3>Missing information</h3>
+<p>More than one third of enquiries do not contain enough information for a useful proposal.</p>
+</div>
+<div class="card choice c" data-diagnose="response">
+<h3>Response speed</h3>
+<p>The average meaningful first response takes 14 hours.</p>
+</div>
+<div class="card choice m" data-diagnose="conversion">
+<h3>Commercial outcome</h3>
+<p>Only 28 percent of enquiries currently progress to a proposal.</p>
+</div>
+</div>
+
+<div id="diagnoseDetail" class="result">Click any issue to see what management would want to understand before changing the process.</div>
+</section>
+
+<section id="options" class="sec softV">
+<span class="badge">Step 2</span>
+<h2>Management has three different AI choices</h2>
+<p class="lead muted">All three are technically plausible. They are not equally valuable, easy or risky.</p>
+
+<div class="g3" id="optionCards">
+<div class="card choice b" data-option="intake">
+<span class="pill">Option 1</span>
+<h3 style="margin-top:10px">AI enquiry assistant</h3>
+<p>Read incoming enquiries, extract the important details, identify missing information and prepare a concise brief for the sales team.</p>
+</div>
+
+<div class="card choice v" data-option="proposal">
+<span class="pill">Option 2</span>
+<h3 style="margin-top:10px">AI proposal copilot</h3>
+<p>Use the client brief, venue information, pricing rules and previous proposals to prepare suitable options and a first proposal draft.</p>
+</div>
+
+<div class="card choice c" data-option="agent">
+<span class="pill">Option 3</span>
+<h3 style="margin-top:10px">AI sales agent</h3>
+<p>Respond directly to selected enquiries, prepare offers, follow up and negotiate within defined commercial limits.</p>
+</div>
+</div>
+
+<div id="optionDetail" class="result optionDetail">Choose an option to examine what it could improve and what it would depend on.</div>
+
+<div class="panel" style="margin-top:20px">
+<h3>Compare the three options</h3>
+<p class="muted">Give each option a simple score from 1 to 5. The score is not the decision. It makes your assumptions visible.</p>
+
+<div class="scoreRow">
+<strong>AI enquiry assistant</strong>
+<select id="v1"><option value="">Value</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<select id="f1"><option value="">Feasibility</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<select id="r1"><option value="">Risk</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+</div>
+
+<div class="scoreRow">
+<strong>AI proposal copilot</strong>
+<select id="v2"><option value="">Value</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<select id="f2"><option value="">Feasibility</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<select id="r2"><option value="">Risk</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+</div>
+
+<div class="scoreRow">
+<strong>AI sales agent</strong>
+<select id="v3"><option value="">Value</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<select id="f3"><option value="">Feasibility</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<select id="r3"><option value="">Risk</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+</div>
+
+<div class="actions"><button class="violet" id="compare">Show my comparison</button></div>
+<div id="compareOut" class="result">Score the three options, then compare your reasoning.</div>
+</div>
+</section>
+
+<section id="design" class="sec softB">
+<span class="badge">Step 3</span>
+<h2>Build the proposed workflow in Whimsical</h2>
+<p class="lead muted">Take the AI option your group selected in Step 2 and show how the event sales process would work with that option in place.</p>
+
+<div class="notice">
+<strong>Your output:</strong><br>
+One proposed workflow showing the AI role, the sales team, the live venue system and the approval route.
+</div>
+
+<div class="panel" style="margin-top:18px">
+<h3>Before moving on, check only these three points</h3>
+<p>Does the workflow show what happens when:</p>
+<p><strong>the event brief is incomplete or conflicting?</strong></p>
+<p><strong>the requested venue is not available?</strong></p>
+<p><strong>a discount is above the sales manager's 8 percent authority?</strong></p>
+<p>If all three are visible, keep the workflow open and continue to Step 4.</p>
+</div>
+
+<label for="chosenOption">Choose the option your group selected in Step 2</label>
+<select id="chosenOption">
+<option value="">Choose an option</option>
+<option value="intake">AI enquiry assistant</option>
+<option value="proposal">AI proposal copilot</option>
+<option value="agent">AI sales agent</option>
+</select>
+
+<div id="designPromptPanel" class="panel" style="margin-top:18px;display:none">
+<div class="label">Paste this into Whimsical</div>
+<pre id="designPrompt" class="prompt"></pre>
+<div class="actions">
+<button class="blue" id="copyDesignPrompt">Copy Whimsical prompt</button>
+<span id="designStatus" class="status"></span>
+</div>
+</div>
+
+<div class="tip"><strong>The aim is not a perfect diagram.</strong> The workflow should make the main work, information and decision points visible.</div>
+</section>
+
+<section id="stress" class="sec softR">
+<span class="badge">Step 4</span>
+<h2>Run three situations through the workflow</h2>
+<p class="lead muted">Use the same Whimsical workflow from Step 3. For each situation, follow the route that the case should take. You do not need to create or edit another workflow.</p>
+
+<div class="g3" style="margin-top:18px">
+<div class="card b">
+<span class="pill">Situation 1</span>
+<h3 style="margin-top:10px">Conflicting guest numbers</h3>
+<p>The brief says 180 guests in one place and 280 in another.</p>
+<p><strong>Route:</strong> clarify with the client before the proposal continues.</p>
+</div>
+
+<div class="card a">
+<span class="pill">Situation 2</span>
+<h3 style="margin-top:10px">Venue unavailable</h3>
+<p>The live venue system shows that the preferred space is no longer available.</p>
+<p><strong>Route:</strong> use the live system result and move to another suitable option or sales review.</p>
+</div>
+
+<div class="card c">
+<span class="pill">Situation 3</span>
+<h3 style="margin-top:10px">Discount request of 14 percent</h3>
+<p>The sales manager may approve only up to 8 percent.</p>
+<p><strong>Route:</strong> send the request to the commercial director for approval.</p>
+</div>
+</div>
+
+<div class="reveal">
+<strong>What Step 4 is showing:</strong><br>
+AI can support the process, but some decisions depend on current system information, client clarification or human authority. The workflow should make those boundaries visible.
+</div>
+</section>
+
+<section id="economics" class="sec softA">
+<span class="badge">Step 5</span>
+<h2>Would the opportunity be worth testing?</h2>
+<p class="lead muted">The business case is built from assumptions. Change them and see how quickly the conclusion changes.</p>
+
+<div class="g2">
+<div class="panel">
+<div class="calcGrid">
+<label><span>Event enquiries per year</span><input id="enquiries" type="number" value="3600" min="0"></label>
+<label><span>Minutes saved per enquiry</span><input id="minutes" type="number" value="10" min="0" step="1"></label>
+<label><span>Sales staff cost per hour, CHF</span><input id="staffCost" type="number" value="55" min="0"></label>
+<label><span>Additional events won per year</span><input id="extraWins" type="number" value="5" min="0"></label>
+<label><span>Average contribution per additional event, CHF</span><input id="contribution" type="number" value="7000" min="0"></label>
+<label><span>Annual AI, integration and review cost, CHF</span><input id="aiCost" type="number" value="45000" min="0"></label>
+</div>
+
+<div class="actions"><button class="amber" id="calc">Recalculate</button></div>
+</div>
+
+<div class="panel">
+<h3>Illustrative annual result</h3>
+<div class="outputGrid">
+<div class="out"><div class="label">Staff hours released</div><div id="hoursOut" class="num">600</div></div>
+<div class="out"><div class="label">Value created</div><div id="valueOut" class="num">CHF 68,000</div></div>
+<div class="out"><div class="label">Estimated net value</div><div id="netOut" class="num">CHF 23,000</div></div>
+</div>
+<div id="calcMessage" class="reveal">This does not prove that the AI use case will work. It shows whether the assumptions are strong enough to justify a pilot.</div>
+</div>
+</div>
+
+<div class="notice"><strong>Important:</strong> time saved is only valuable if the business can use that capacity. Extra event wins are only valuable if the improvement is genuinely caused by the redesigned process. The numbers should be challenged, not simply accepted.</div>
+</section>
+
+<section id="takeaway" class="sec softM">
+<span class="badge">Final decision</span>
+<h2>What would you recommend to Asteria?</h2>
+
+<div class="g2">
+<div class="panel">
+<label>Which AI option would you test first?</label>
+<select id="finalOption">
+<option value="">Choose one</option>
+<option>AI enquiry assistant</option>
+<option>AI proposal copilot</option>
+<option>AI sales agent</option>
+</select>
+
+<label>Why is this the best place to start?</label>
+<textarea id="finalWhy" rows="4" placeholder="Link your answer to the business problem and expected value"></textarea>
+
+<label>What should AI do?</label>
+<textarea id="finalRole" rows="3" placeholder="State the specific AI role"></textarea>
+
+<label>What should remain with people or existing systems?</label>
+<textarea id="finalBoundary" rows="3" placeholder="State the important limits"></textarea>
+
+<label>How would you judge whether the pilot worked?</label>
+<textarea id="finalMeasure" rows="3" placeholder="Choose the measures that matter"></textarea>
+
+<div class="actions"><button class="mint" id="buildRecommendation">Build recommendation</button></div>
+</div>
+
+<div class="panel">
+<div id="recommendationOut" class="result">Complete the recommendation on the left.</div>
+</div>
+</div>
+
+<div class="takeaway" style="margin-top:20px">The workflow is not the final product. It is a way to see where value is being lost, compare possible AI roles and design a better way of working.</div>
+</section>
+
+</main>
+
+<footer>Designed and developed by Dr Sanjay Chib</footer>
+
+<script>
+const esc=s=>String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+
+const diagnoseText={
+time:"<strong>Management question:</strong><br>How much of the review is repetitive, and how much requires sales judgement? If the repetitive part is large, that may be a useful place for AI support.",
+missing:"<strong>Management question:</strong><br>Which pieces of information are most often missing? Could the process identify those gaps earlier and ask the client the right questions sooner?",
+response:"<strong>Management question:</strong><br>Does a faster useful response improve conversion or client experience? Speed matters only if it changes an outcome the business values.",
+conversion:"<strong>Management question:</strong><br>Why do most enquiries fail to reach proposal stage? AI is only useful if it improves a cause that the business can actually influence."
+};
+
+document.querySelectorAll("[data-diagnose]").forEach(card=>{
+  card.addEventListener("click",()=>{
+    document.querySelectorAll("[data-diagnose]").forEach(x=>x.classList.remove("active"));
+    card.classList.add("active");
+    document.getElementById("diagnoseDetail").innerHTML=diagnoseText[card.dataset.diagnose];
+  });
+});
+
+const optionText={
+intake:"<strong>AI enquiry assistant</strong><br><br><strong>Possible value:</strong> reduces repetitive reading, structures enquiries consistently and identifies missing information earlier.<br><br><strong>Needs:</strong> access to the incoming enquiry and a clear definition of the information sales teams require.<br><br><strong>Limits:</strong> it should not invent missing client information or claim that a venue is available.",
+proposal:"<strong>AI proposal copilot</strong><br><br><strong>Possible value:</strong> reduces proposal preparation time and helps sales teams use relevant venue and offer information consistently.<br><br><strong>Needs:</strong> current venue information, approved pricing rules, service details and suitable proposal content.<br><br><strong>Limits:</strong> live availability and commercial commitments must come from the relevant systems and authorised staff.",
+agent:"<strong>AI sales agent</strong><br><br><strong>Possible value:</strong> could respond and follow up at greater scale and reduce routine sales workload.<br><br><strong>Needs:</strong> reliable access to current information, clear pricing authority, client history and strong rules for what it may commit to.<br><br><strong>Limits:</strong> greater autonomy increases the consequence of a wrong offer, wrong price or poor client interaction."
+};
+
+document.querySelectorAll("[data-option]").forEach(card=>{
+  card.addEventListener("click",()=>{
+    document.querySelectorAll("[data-option]").forEach(x=>x.classList.remove("active"));
+    card.classList.add("active");
+    document.getElementById("optionDetail").innerHTML=optionText[card.dataset.option];
+  });
+});
+
+document.getElementById("compare").addEventListener("click",()=>{
+  const vals=[];
+  for(let i=1;i<=3;i++){
+    const v=Number(document.getElementById("v"+i).value);
+    const f=Number(document.getElementById("f"+i).value);
+    const r=Number(document.getElementById("r"+i).value);
+    if(!v||!f||!r){
+      document.getElementById("compareOut").innerHTML="<strong>Score value, feasibility and risk for all three options first.</strong>";
+      return;
+    }
+    vals.push({i,v,f,r,score:v+f-r});
+  }
+  const names=["AI enquiry assistant","AI proposal copilot","AI sales agent"];
+  vals.sort((a,b)=>b.score-a.score);
+  document.getElementById("compareOut").innerHTML=
+    "<strong>Your current strongest option:</strong> "+names[vals[0].i-1]+
+    "<br><br>This result comes from your own assumptions. Use it to explain your reasoning, not as an automatic answer.";
+});
+
+const designPrompts={
+intake:`TASK
+Create ONE proposed operating workflow for Asteria Events showing how the event sales process works after introducing an AI enquiry assistant.
+
+BUSINESS CONTEXT
+Asteria is a premium hospitality group. Corporate event enquiries move from initial enquiry through brief clarification, venue checking, proposal preparation, client discussion and commercial agreement.
+
+AI ROLE
+The AI enquiry assistant:
+• reads the incoming enquiry
+• extracts the important event details
+• identifies missing or conflicting information
+• prepares a concise brief for the sales team
+
+BUSINESS RULES
+• If important information is missing or conflicting, the client must be asked to clarify before proposal preparation continues
+• Current venue availability must come from the live venue system
+• A sales manager may approve discounts up to 8 percent
+• A discount above 8 percent requires commercial director approval
+• AI must not invent missing client information, venue availability, prices or approvals
+
+SHOW THE FULL PROPOSED PROCESS
+Start with the event enquiry and continue through brief review, clarification where needed, live venue availability, proposal preparation, client discussion and commercial approval.
+
+MAKE THESE THREE DECISIONS VISIBLE
+• Is the event brief complete and consistent?
+• Is the required venue currently available?
+• Is the commercial request within the sales manager approval limit?
+
+SHOW WHO OR WHAT ACTS
+Label steps clearly as AI, Sales team, Live venue system, Sales manager or Commercial director where relevant.
+
+FORMAT
+Create one clear left to right flowchart.
+Use short wording inside each shape.
+Use decision points for the three questions above.
+Do not create a separate current workflow.
+Do not invent additional Asteria rules.`,
+
+proposal:`TASK
+Create ONE proposed operating workflow for Asteria Events showing how the event sales process works after introducing an AI proposal copilot.
+
+BUSINESS CONTEXT
+Asteria is a premium hospitality group. Corporate event enquiries move from initial enquiry through brief clarification, venue checking, proposal preparation, client discussion and commercial agreement.
+
+AI ROLE
+The AI proposal copilot:
+• uses the structured client brief
+• uses approved venue and service information
+• prepares suitable event options
+• drafts the first proposal for sales review
+
+BUSINESS RULES
+• If important information is missing or conflicting, the client must be asked to clarify before proposal preparation continues
+• Current venue availability must come from the live venue system
+• A sales manager may approve discounts up to 8 percent
+• A discount above 8 percent requires commercial director approval
+• AI must not invent missing client information, venue availability, prices or approvals
+• A sales person reviews the proposal before it is sent
+
+SHOW THE FULL PROPOSED PROCESS
+Start with the event enquiry and continue through brief review, clarification where needed, live venue availability, proposal preparation, client discussion and commercial approval.
+
+MAKE THESE THREE DECISIONS VISIBLE
+• Is the event brief complete and consistent?
+• Is the required venue currently available?
+• Is the commercial request within the sales manager approval limit?
+
+SHOW WHO OR WHAT ACTS
+Label steps clearly as AI, Sales team, Live venue system, Sales manager or Commercial director where relevant.
+
+FORMAT
+Create one clear left to right flowchart.
+Use short wording inside each shape.
+Use decision points for the three questions above.
+Do not create a separate current workflow.
+Do not invent additional Asteria rules.`,
+
+agent:`TASK
+Create ONE proposed operating workflow for Asteria Events showing how the event sales process works after introducing an AI sales agent for selected enquiries.
+
+BUSINESS CONTEXT
+Asteria is a premium hospitality group. Corporate event enquiries move from initial enquiry through brief clarification, venue checking, proposal preparation, client discussion and commercial agreement.
+
+AI ROLE
+For selected enquiries, the AI sales agent may:
+• structure the enquiry
+• ask for missing information
+• prepare an offer using approved information
+• send the offer
+• follow up with the client
+• negotiate only within explicitly approved commercial limits
+
+BUSINESS RULES
+• If important information is missing or conflicting, the client must be asked to clarify before proposal preparation continues
+• Current venue availability must come from the live venue system
+• A sales manager may approve discounts up to 8 percent
+• A discount above 8 percent requires commercial director approval
+• AI must not invent missing client information, venue availability, prices or approvals
+• Complex or unresolved cases go to the sales team
+
+SHOW THE FULL PROPOSED PROCESS
+Start with the event enquiry and continue through brief review, clarification where needed, live venue availability, proposal preparation, client discussion and commercial approval.
+
+MAKE THESE THREE DECISIONS VISIBLE
+• Is the event brief complete and consistent?
+• Is the required venue currently available?
+• Is the commercial request within the sales manager approval limit?
+
+SHOW WHO OR WHAT ACTS
+Label steps clearly as AI, Sales team, Live venue system, Sales manager or Commercial director where relevant.
+
+FORMAT
+Create one clear left to right flowchart.
+Use short wording inside each shape.
+Use decision points for the three questions above.
+Do not create a separate current workflow.
+Do not invent additional Asteria rules.`
+};
+
+document.getElementById("chosenOption").addEventListener("change",e=>{
+  const key=e.target.value;
+  const panel=document.getElementById("designPromptPanel");
+  if(!key){panel.style.display="none";return}
+  document.getElementById("designPrompt").textContent=designPrompts[key];
+  panel.style.display="block";
+});
+
+function copyText(text,id){
+  const ta=document.createElement("textarea");
+  ta.value=text;document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");document.getElementById(id).textContent="Copied"}
+  catch(e){document.getElementById(id).textContent="Select and copy manually"}
+  ta.remove();
+}
+
+document.getElementById("copyDesignPrompt").addEventListener("click",()=>{
+  copyText(document.getElementById("designPrompt").textContent,"designStatus");
+});
+
+function money(n){return "CHF "+Math.round(n).toLocaleString("en-CH")}
+
+function calc(){
+  const enquiries=Math.max(0,Number(document.getElementById("enquiries").value)||0);
+  const minutes=Math.max(0,Number(document.getElementById("minutes").value)||0);
+  const staff=Math.max(0,Number(document.getElementById("staffCost").value)||0);
+  const wins=Math.max(0,Number(document.getElementById("extraWins").value)||0);
+  const contribution=Math.max(0,Number(document.getElementById("contribution").value)||0);
+  const cost=Math.max(0,Number(document.getElementById("aiCost").value)||0);
+
+  const hours=enquiries*minutes/60;
+  const timeValue=hours*staff;
+  const revenueValue=wins*contribution;
+  const totalValue=timeValue+revenueValue;
+  const net=totalValue-cost;
+
+  document.getElementById("hoursOut").textContent=Math.round(hours).toLocaleString("en-CH");
+  document.getElementById("valueOut").textContent=money(totalValue);
+  document.getElementById("netOut").textContent=money(net);
+
+  document.getElementById("calcMessage").innerHTML=net>0
+    ?"<strong>Potentially worth testing under these assumptions.</strong> The next step would be to test whether the assumed time saving and additional wins appear in a controlled pilot."
+    :"<strong>Weak financial case under these assumptions.</strong> The option may still have quality or strategic value, but the assumptions do not yet support a strong financial case.";
+}
+document.getElementById("calc").addEventListener("click",calc);
+calc();
+
+document.getElementById("buildRecommendation").addEventListener("click",()=>{
+  const opt=document.getElementById("finalOption").value;
+  const why=document.getElementById("finalWhy").value.trim();
+  const role=document.getElementById("finalRole").value.trim();
+  const boundary=document.getElementById("finalBoundary").value.trim();
+  const measure=document.getElementById("finalMeasure").value.trim();
+
+  if(!opt||!why||!role||!boundary||!measure){
+    document.getElementById("recommendationOut").innerHTML="<strong>Complete all five fields first.</strong>";
+    return;
+  }
+
+  document.getElementById("recommendationOut").innerHTML=`
+    <h3>${esc(opt)}</h3>
+    <div class="summaryGrid">
+      <div class="summaryItem"><strong>Why this option</strong><br>${esc(why)}</div>
+      <div class="summaryItem"><strong>AI role</strong><br>${esc(role)}</div>
+      <div class="summaryItem"><strong>People and system role</strong><br>${esc(boundary)}</div>
+      <div class="summaryItem"><strong>How success would be judged</strong><br>${esc(measure)}</div>
+    </div>
+  `;
+});
+</script>
+</body>
+</html>
